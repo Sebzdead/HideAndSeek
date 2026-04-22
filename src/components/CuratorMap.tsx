@@ -1,8 +1,8 @@
 import "leaflet/dist/leaflet.css";
 
-import * as L from "leaflet";
 import * as turf from "@turf/turf";
 import type { FeatureCollection } from "geojson";
+import * as L from "leaflet";
 import { useState } from "react";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 

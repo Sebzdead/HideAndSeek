@@ -84,7 +84,7 @@ export const AddQuestionDialog = ({
             id: "matching",
             data: defaultCustomQuestions.get()
                 ? { lat: center.lat, lng: center.lng, type: "custom-points" }
-                : { lat: center.lat, lng: center.lng },
+                : { lat: center.lat, lng: center.lng, type: "district" },
         });
         return true;
     };

@@ -10,8 +10,9 @@ import {
 } from "@/lib/context";
 import {
     fetchLocalLandmarks,
+    loadLocalStations,
 } from "@/maps/api";
-import { geoSpatialVoronoi, modifyMapData } from "@/maps/geo-utils";
+import { geoSpatialVoronoi, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import type {
     MatchingQuestion,
 } from "@/maps/schema";
@@ -41,7 +42,33 @@ export const determineMatchingBoundary = _.memoize(
 
         switch (question.type) {
             case "metro-line": {
-                return false;
+                const selectedLine = (question as any).metroLine || "green";
+                const stations = await loadLocalStations();
+
+                const excludedStations = stations.filter((s) => {
+                    const metroLines = (s.properties as any).metroLines || "";
+                    const lines = metroLines.split(",").map((l: string) => l.trim());
+                    const isOnLine = lines.includes(selectedLine);
+                    return question.same ? !isOnLine : isOnLine;
+                });
+
+                if (excludedStations.length === 0) {
+                    toast.error(`No stations found to exclude for metro line ${selectedLine}`);
+                    throw new Error("No stations found");
+                }
+
+                // 300m = 0.3km
+                const HIDING_RADIUS_KM = 0.3;
+                const circles = excludedStations.map((station) => {
+                    const center = turf.getCoord(station);
+                    return turf.circle(center, HIDING_RADIUS_KM, {
+                        steps: 32,
+                        units: "kilometers",
+                    });
+                });
+
+                boundary = safeUnion(turf.featureCollection(circles));
+                break;
             }
             case "district": {
                 try {
@@ -78,13 +105,28 @@ export const determineMatchingBoundary = _.memoize(
                     throw new Error("No places found");
                 }
 
-                const voronoi = geoSpatialVoronoi(data);
-                const point = turf.point([question.lng, question.lat]);
+                const voronoi = geoSpatialVoronoi(turf.featureCollection(data));
+                const poiId = (question as any).poiId;
+                const hasPoiId = poiId && poiId !== "__default__";
 
-                for (const feature of voronoi.features) {
-                    if (turf.booleanPointInPolygon(point, feature)) {
-                        boundary = feature;
-                        break;
+                if (hasPoiId) {
+                    for (const feature of voronoi.features) {
+                        if (feature.properties?.site?.properties?.Name === poiId) {
+                            boundary = feature;
+                            break;
+                        }
+                    }
+                    if (!boundary) {
+                        toast.error(`Could not find boundary for selected ${question.type}.`);
+                        throw new Error("No boundary found");
+                    }
+                } else {
+                    const point = turf.point([question.lng, question.lat]);
+                    for (const feature of voronoi.features) {
+                        if (turf.booleanPointInPolygon(point, feature as any)) {
+                            boundary = feature;
+                            break;
+                        }
                     }
                 }
                 break;
@@ -98,6 +140,8 @@ export const determineMatchingBoundary = _.memoize(
             type: question.type,
             lat: question.lat,
             lng: question.lng,
+            same: question.same,
+            metroLine: (question as any).metroLine,
             entirety: polyGeoJSON.get()
                 ? polyGeoJSON.get()
                 : mapGeoLocation.get(),
@@ -112,9 +156,13 @@ export const adjustPerMatching = async (
 
     const boundary = await determineMatchingBoundary(question);
 
-    if (boundary === false) {
+    if (!boundary || (boundary as any) === false) {
         return mapData;
     }
 
-    return modifyMapData(mapData, boundary, question.same);
+    if (question.type === "metro-line") {
+        return modifyMapData(mapData, boundary as any, false);
+    }
+
+    return modifyMapData(mapData, boundary as any, question.same);
 };

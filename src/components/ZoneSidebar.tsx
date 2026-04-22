@@ -32,10 +32,10 @@ import { cn } from "@/lib/utils";
 import {
     BLANK_GEOJSON,
     findPlacesSpecificInZone,
+    loadLocalStations,
     QuestionSpecificLocation,
     type StationCircle,
     type StationPlace,
-    trainLineNodeFinder,
 } from "@/maps/api";
 import {
     extractStationLabel,
@@ -68,52 +68,6 @@ let buttonJustClicked = false;
  * Duplicate STM entries (same stop_name) are de-duplicated by taking the
  * first occurrence (they share the same coordinate).
  */
-async function loadLocalStations(): Promise<StationPlace[]> {
-    const baseUrl = import.meta.env.BASE_URL;
-
-    const [stmData, remData] = await Promise.all([
-        fetch(`${baseUrl}/metro/stm_arrets_sig.json`).then((r) => r.json()),
-        fetch(`${baseUrl}/metro/rem_stations.geojson`).then((r) => r.json()),
-    ]);
-
-    const places: StationPlace[] = [];
-    const seen = new Set<string>();
-
-    // STM Metro: only entries with a metro URL; de-duplicate by stop_name
-    for (const feature of (stmData as FeatureCollection).features) {
-        const props = (feature as any).properties;
-        const url: string = props?.stop_url ?? "";
-        if (!url.includes("/metro/")) continue;
-
-        const name: string = props?.stop_name ?? "";
-        if (seen.has(name)) continue;
-        seen.add(name);
-
-        places.push({
-            type: "Feature",
-            geometry: feature.geometry as any,
-            properties: {
-                id: `stm-${props.stop_id}`,
-                name,
-            },
-        });
-    }
-
-    // REM stations
-    for (const feature of (remData as FeatureCollection).features) {
-        const props = (feature as any).properties;
-        const name: string = props?.name ?? "";
-        const id: string = (feature as any).id ?? `rem-${name}`;
-        places.push({
-            type: "Feature",
-            geometry: feature.geometry as any,
-            properties: { id, name },
-        });
-    }
-
-    return places;
-}
-
 export const ZoneSidebar = () => {
     const $displayHidingZones = useStore(displayHidingZones);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
@@ -218,55 +172,6 @@ export const ZoneSidebar = () => {
                 });
 
             for (const question of questions.get()) {
-                if (
-                    question.id === "matching" &&
-                    question.data.type === "metro-line"
-                ) {
-                    const location = turf.point([
-                        question.data.lng,
-                        question.data.lat,
-                    ]);
-
-                    const nearestTrainStation = turf.nearestPoint(
-                        location,
-                        turf.featureCollection(
-                            circles.map((x) => x.properties),
-                        ) as any,
-                    );
-
-                    const nid = nearestTrainStation.properties.id as
-                        | string
-                        | undefined;
-                    if (!nid || !nid.includes("/")) {
-                        toast.warning(
-                            "Nearest station has no OSM id; skipping 'metro line' filter.",
-                        );
-                        continue;
-                    }
-
-                    const nodes = await trainLineNodeFinder(nid);
-
-                    if (nodes.length === 0) {
-                        toast.warning(
-                            `No train line found for ${extractStationName(
-                                nearestTrainStation,
-                            )}`,
-                        );
-                        continue;
-                    } else {
-                        circles = circles.filter((circle) => {
-                            const idProp =
-                                circle.properties.properties.id;
-                            if (!idProp || !idProp.includes("/"))
-                                return false;
-                            const id = parseInt(idProp.split("/")[1]);
-
-                            return question.data.same
-                                ? nodes.includes(id)
-                                : !nodes.includes(id);
-                        });
-                    }
-                }
                 if (
                     question.id === "measuring" &&
                     (question.data.type === "mcdonalds")

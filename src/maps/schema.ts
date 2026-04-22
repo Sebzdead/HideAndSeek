@@ -200,15 +200,19 @@ export const matchingQuestionSchema = z.union([
     }),
     baseMatchingQuestionSchema.extend({
         type: z.literal("metro-line").describe("Metro Line Question"),
+        metroLine: z.enum(["green", "orange", "yellow", "blue", "rem"]).default("green"),
     }),
     baseMatchingQuestionSchema.extend({
         type: z.literal("park").describe("Park Question"),
+        poiId: z.string().optional(),
     }),
     baseMatchingQuestionSchema.extend({
         type: z.literal("hospital").describe("Hospital Question"),
+        poiId: z.string().optional(),
     }),
     baseMatchingQuestionSchema.extend({
         type: z.literal("university").describe("University Question"),
+        poiId: z.string().optional(),
     }),
 ]).describe(NO_GROUP);
 

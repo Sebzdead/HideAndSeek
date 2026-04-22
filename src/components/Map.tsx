@@ -17,10 +17,10 @@ import {
     baseTileLayer,
     displayLibraries,
     displayMcDonalds,
+    displayMontrealDistricts,
     followMe,
     gpsPosition,
     hiderModeEnabled,
-    displayMontrealDistricts,
     isLoading,
     leafletMapContext,
     mapGeoJSON,
@@ -597,19 +597,48 @@ export const Map = ({ className }: { className?: string }) => {
                             </div>
                         `;
 
-                        const lng = feature.geometry.coordinates[0];
-                        const lat = feature.geometry.coordinates[1];
+            const lng = feature.geometry.coordinates[0];
+            const lat = feature.geometry.coordinates[1];
 
-                        const btnMatch =
-                            container.querySelector("#p-btn-match");
-                        if (btnMatch)
-                            btnMatch.addEventListener("click", () => {
-                                map.closePopup();
-                                addQuestion({
-                                    id: "matching",
-                                    data: { lat, lng },
-                                });
-                            });
+            const landmarkType = (() => {
+                if (
+                    name.includes("Hospital") ||
+                    name.includes("Hôpital") ||
+                    name.includes("Neuro") ||
+                    name.includes("CHUM")
+                )
+                    return "hospital";
+                if (
+                    name.includes("Park") ||
+                    name.includes("Parc") ||
+                    name.includes("Champ-de-Mars")
+                )
+                    return "park";
+                if (
+                    name.includes("University") ||
+                    name.includes("Université")
+                )
+                    return "university";
+                if (name.includes("Airport")) return "airport";
+                return null;
+            })();
+
+            const btnMatch =
+                container.querySelector("#p-btn-match");
+            if (btnMatch)
+                btnMatch.addEventListener("click", () => {
+                    map.closePopup();
+                    addQuestion({
+                        id: "matching",
+                        data: {
+                            lat,
+                            lng,
+                            ...(landmarkType
+                                ? { type: landmarkType, poiId: name }
+                                : {}),
+                        },
+                    });
+                });
 
                         const btnMeas = container.querySelector("#p-btn-meas");
                         if (btnMeas)
