@@ -15,6 +15,8 @@ import {
     animateMapMovements,
     autoZoom,
     baseTileLayer,
+    displayLibraries,
+    displayMcDonalds,
     followMe,
     gpsPosition,
     hiderModeEnabled,
@@ -238,6 +240,8 @@ export const Map = ({ className }: { className?: string }) => {
     const $isLoading = useStore(isLoading);
     const $followMe = useStore(followMe);
     const $permanentOverlay = useStore(permanentOverlay);
+    const $displayMcDonalds = useStore(displayMcDonalds);
+    const $displayLibraries = useStore(displayLibraries);
     const map = useStore(leafletMapContext);
 
     const [metroLines, setMetroLines] = useState<any>(null);
@@ -245,6 +249,8 @@ export const Map = ({ className }: { className?: string }) => {
     const [remStations, setRemStations] = useState<any>(null);
     const [remTracks, setRemTracks] = useState<any>(null);
     const [poiData, setPoiData] = useState<any>(null);
+    const [mcdonaldsData, setMcdonaldsData] = useState<any>(null);
+    const [librariesData, setLibrariesData] = useState<any>(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -288,6 +294,22 @@ export const Map = ({ className }: { className?: string }) => {
                     setPoiData(p);
                 } catch {
                     console.error("Could not load POI data");
+                }
+                try {
+                    const m = await fetch(
+                        `${import.meta.env.BASE_URL}/data/McDonalds_cleaned.geojson`,
+                    ).then((r) => r.json());
+                    setMcdonaldsData(m);
+                } catch {
+                    console.error("Could not load McDonalds data");
+                }
+                try {
+                    const lib = await fetch(
+                        `${import.meta.env.BASE_URL}/data/Libraries_cleaned.geojson`,
+                    ).then((r) => r.json());
+                    setLibrariesData(lib);
+                } catch {
+                    console.error("Could not load Libraries data");
                 }
             };
             get();
@@ -682,6 +704,68 @@ export const Map = ({ className }: { className?: string }) => {
                 map.removeLayer(poiOverlay);
         };
     }, [map, metroLines, metroStops, remStations, remTracks, poiData]);
+
+    useEffect(() => {
+        if (!map) return;
+
+        let mcdOverlay: L.GeoJSON | null = null;
+        let libOverlay: L.GeoJSON | null = null;
+
+        if ($displayMcDonalds && mcdonaldsData) {
+            mcdOverlay = L.geoJSON(mcdonaldsData, {
+                pointToLayer: (feature: any, latlng: any) =>
+                    L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: "yellow",
+                        color: "red",
+                        weight: 2,
+                        fillOpacity: 0.8,
+                    }),
+                onEachFeature: (feature: any, layer: any) => {
+                    const name = feature?.properties?.name || "McDonald's";
+                    const addr = feature?.properties?.["addr:street"] 
+                        ? `${feature.properties["addr:housenumber"] || ""} ${feature.properties["addr:street"]}` 
+                        : "";
+                    layer.bindPopup(`<b>${name}</b><br/>${addr}`);
+                }
+            });
+            // @ts-expect-error type hint omission
+            mcdOverlay.permanentGeoJSON = true;
+            mcdOverlay.addTo(map);
+            mcdOverlay.bringToFront();
+        }
+
+        if ($displayLibraries && librariesData) {
+            libOverlay = L.geoJSON(librariesData, {
+                pointToLayer: (feature: any, latlng: any) =>
+                    L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: "blue",
+                        color: "darkblue",
+                        weight: 2,
+                        fillOpacity: 0.8,
+                    }),
+                onEachFeature: (feature: any, layer: any) => {
+                    const name = feature?.properties?.name || "Library";
+                    const addr = feature?.properties?.["addr:street"] 
+                        ? `${feature.properties["addr:housenumber"] || ""} ${feature.properties["addr:street"]}` 
+                        : "";
+                    layer.bindPopup(`<b>${name}</b><br/>${addr}`);
+                }
+            });
+            // @ts-expect-error type hint omission
+            libOverlay.permanentGeoJSON = true;
+            libOverlay.addTo(map);
+            libOverlay.bringToFront();
+        }
+
+        return () => {
+            if (mcdOverlay && map.hasLayer(mcdOverlay))
+                map.removeLayer(mcdOverlay);
+            if (libOverlay && map.hasLayer(libOverlay))
+                map.removeLayer(libOverlay);
+        };
+    }, [map, mcdonaldsData, librariesData, $displayMcDonalds, $displayLibraries]);
 
     const followMeMarkerRef = useMemo(
         () => ({ current: null as L.Marker | null }),

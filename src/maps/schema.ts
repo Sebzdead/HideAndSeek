@@ -123,6 +123,8 @@ const apiLocationSchema = z.union([
     z.literal("river"),
     z.literal("museum"),
     z.literal("cinema"),
+    z.literal("mcdonalds"),
+    z.literal("library"),
 ]);
 
 const baseTentacleQuestionSchema = ordinaryBaseQuestionSchema.extend({

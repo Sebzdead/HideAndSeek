@@ -45,10 +45,6 @@ import {
     safeUnion,
 } from "@/maps/geo-utils";
 
-import { Label } from "./ui/label";
-import { ScrollToTop } from "./ui/scroll-to-top";
-import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
-
 import {
     Command,
     CommandEmpty,
@@ -57,6 +53,9 @@ import {
     CommandItem,
     CommandList,
 } from "./ui/command";
+import { Label } from "./ui/label";
+import { ScrollToTop } from "./ui/scroll-to-top";
+import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
 
 // Hardcoded 300 metre radius for all hiding zones
 const HIDING_RADIUS_KM = 0.3;

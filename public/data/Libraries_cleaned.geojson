@@ -1,0 +1,1832 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-04-20T16:12:44Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/19912993",
+        "amenity": "library",
+        "building": "yes",
+        "building:levels": "8",
+        "learning": "university",
+        "material": "concrete",
+        "name": "McLennan Library Building",
+        "name:fr": "Pavillon McLennan de la Bibliothèque",
+        "wheelchair": "yes",
+        "wikidata": "Q6802196",
+        "wikipedia": "en:McLennan Library Building",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5759287,
+          45.5032722
+        ]
+      },
+      "id": "way/19912993"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/20258014",
+        "addr:city": "Montréal",
+        "addr:housenumber": "4120",
+        "addr:postcode": "H1V 1J9",
+        "addr:street": "Rue Ontario Est",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Maisonneuve",
+        "opening_hours": "Mo-Fr 12:00-19:00; Tu-We 10:00-19:00; Sa-Su 10:00-17:00",
+        "phone": "+1 514 872 4213",
+        "type": "multipolygon",
+        "website": "https://montreal.ca/lieux/bibliotheque-maisonneuve",
+        "wheelchair": "yes",
+        "wikidata": "Q111207548",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5405648,
+          45.5506235
+        ]
+      },
+      "id": "relation/20258014"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/23028929",
+        "addr:city": "Montréal",
+        "addr:housenumber": "475",
+        "addr:postcode": "H2L 5C4",
+        "addr:province": "Québec",
+        "addr:street": "Boulevard De Maisonneuve Est",
+        "air_conditioning": "yes",
+        "amenity": "library",
+        "building": "library",
+        "building:levels": "5",
+        "building:levels:underground": "3",
+        "building:material": "glass",
+        "check_date": "2025-08-03",
+        "check_date:opening_hours": "2025-08-03",
+        "internet_access": "wlan",
+        "internet_access:fee": "customers",
+        "internet_access:ssid": "BAnQ_Public",
+        "name": "Grande Bibliothèque",
+        "name:formal": "Grande Bibliothèque",
+        "opening_hours": "Mo off; Tu-Fr 09:00-21:00; Sa-Su 09:00-17:00",
+        "opening_hours:url": "http://www.banq.qc.ca/a_propos_banq/informations_pratiques/grande_bibliotheque/index.html",
+        "operator": "Bibliothèque et Archives nationales du Québec",
+        "phone": "+1-514-873-1100",
+        "ref:isil": "QMBN",
+        "roof:shape": "flat",
+        "short_name": "BAnQ",
+        "website": "http://www.banq.qc.ca",
+        "wheelchair": "yes",
+        "wikidata": "Q3114903",
+        "wikipedia": "fr:Grande Bibliothèque",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5624361,
+          45.5154323
+        ]
+      },
+      "id": "way/23028929"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/35161088",
+        "addr:housenumber": "4574",
+        "addr:postcode": "H3Z 1G1",
+        "addr:street": "Rue Sherbrooke Ouest",
+        "addr:suburb": "Westmount",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "name": "Bibiothèque Publique de Westmount",
+        "name:en": "Westmount Public Library",
+        "name:fr": "Bibliothèque Publique de Westmount",
+        "phone": "+1 514 989 5299",
+        "website": "https://www.westlib.org/",
+        "wikidata": "Q20006962",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5992729,
+          45.4812785
+        ]
+      },
+      "id": "way/35161088"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/47225509",
+        "addr:city": "Montréal",
+        "addr:housenumber": "1080",
+        "addr:street": "Avenue Dollard",
+        "amenity": "library",
+        "attribution": "Natural Resources Canada",
+        "building": "yes",
+        "building:levels": "1",
+        "canvec:CODE": "2010252",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque L’Octogone",
+        "phone": "+1-514-367-6384",
+        "source": "CanVec_Import_2009;bing",
+        "website": "https://montreal.ca/lieux/bibliotheque-loctogone",
+        "wheelchair": "yes",
+        "wikimedia_commons": "Category:Bibliothèque L'Octogone",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6235267,
+          45.4242983
+        ]
+      },
+      "id": "way/47225509"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/92160984",
+        "addr:city": "Montréal",
+        "addr:housenumber": "3131",
+        "addr:postcode": "H1Y 1M4",
+        "addr:street": "Boulevard Rosemont",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque de Rosemont",
+        "opening_hours": "Mo,We-Fr 10:00-18:00; Tu 13:00-20:00; Sa 10:00-17:00; Su 10:00-17:00",
+        "phone": "+1-514-872-4701",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-rosemont",
+        "wikidata": "Q81843719",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.582342,
+          45.5519275
+        ]
+      },
+      "id": "way/92160984"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/158242593",
+        "addr:city": "Montréal",
+        "addr:housenumber": "5290",
+        "addr:postcode": "H3T 1Y2",
+        "addr:province": "Québec",
+        "addr:street": "Chemin de la Côte-des-Neiges",
+        "amenity": "library",
+        "building": "civic",
+        "building:levels": "2",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque de Côte-des-Neiges",
+        "opening_hours": "Mo-Fr 10:00-18:00; Tu-We 12:00-19:30; Sa-Su 10:00-17:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-cote-des-neiges",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6222404,
+          45.4959105
+        ]
+      },
+      "id": "way/158242593"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/171582344",
+        "addr:city": "Outremont",
+        "addr:housenumber": "41",
+        "addr:province": "QC",
+        "addr:street": "Avenue Saint-Just",
+        "amenity": "library",
+        "building": "yes",
+        "building:levels": "3",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Robert-Bourassa",
+        "operator": "Arrondissement d'Outremont",
+        "operator:type": "public",
+        "phone": "+1-514 495-6208",
+        "source": "Bing;local knowledge",
+        "website": "https://montreal.ca/lieux/bibliotheque-robert-bourassa",
+        "wheelchair": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6084316,
+          45.5178839
+        ]
+      },
+      "id": "way/171582344"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/186307179",
+        "addr:housenumber": "5434",
+        "addr:postcode": "H2V 4G7",
+        "addr:street": "Avenue du Parc",
+        "amenity": "library",
+        "building": "yes",
+        "building:levels": "2.5",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Mordecai-Richler",
+        "name:en": "Bibliothèque Mordecai-Richler",
+        "name:fr": "Bibliothèque Mordecai-Richler",
+        "old_name:en": "Mile-End Library",
+        "old_name:fr": "Bibliothèque Mile-End",
+        "opening_hours": "Mo,Th 10:00-18:00; Tu,We 10:00-20:00; Fr 12:00-18:00; Sa 10:00-17:00; Su 12:00-17:00",
+        "source": "bing",
+        "website": "https://montreal.ca/lieux/bibliotheque-mordecai-richler",
+        "wheelchair": "yes",
+        "wikidata": "Q16506938",
+        "wikipedia": "fr:Bibliothèque Mordecai-Richler",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6017018,
+          45.5216337
+        ]
+      },
+      "id": "way/186307179"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/224272888",
+        "addr:housenumber": "17100",
+        "addr:postcode": "H9J 2W2",
+        "addr:province": "QC",
+        "addr:street": "Boulevard Hymus",
+        "addr:suburb": "Kirkland",
+        "amenity": "library",
+        "fax": "+1-514-630-2716",
+        "internet_access": "wlan",
+        "name": "Kirkland municipal library",
+        "name:en": "Kirkland municipal library",
+        "name:fr": "Bibliothèque de Kirkland",
+        "phone": "+1-514-630-2726"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.8577361,
+          45.4484029
+        ]
+      },
+      "id": "node/224272888"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/240211072",
+        "addr:city": "Montréal",
+        "addr:housenumber": "10400",
+        "addr:street": "Avenue de Belleville",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Bellevile",
+        "website": "https://montreal.ca/lieux/bibliotheque-belleville",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6422917,
+          45.5819315
+        ]
+      },
+      "id": "way/240211072"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/240211073",
+        "addr:city": "Montréal",
+        "addr:housenumber": "5400",
+        "addr:street": "Boulevard Henri-Bourassa",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Henri-Bourassa",
+        "phone": "+1-514-328-4125",
+        "website": "https://montreal.ca/lieux/bibliotheque-henri-bourassa",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6250091,
+          45.6046301
+        ]
+      },
+      "id": "way/240211073"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/244507346",
+        "addr:city": "Dorval",
+        "addr:housenumber": "1401",
+        "addr:postcode": "H9S 2E5",
+        "addr:province": "Québec",
+        "addr:street": "Chemin du Bord-du-Lac - Lakeshore",
+        "amenity": "library",
+        "name": "Bibliothèque de Dorval",
+        "name:en": "Dorval Public Library",
+        "name:fr": "Bibliothèque de Dorval",
+        "website": "http://biblioweb.ville.dorval.qc.ca/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.7564648,
+          45.439595
+        ]
+      },
+      "id": "node/244507346"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/266434824",
+        "addr:city": "Montréal",
+        "addr:housenumber": "2727",
+        "addr:postcode": "H4R 1T4",
+        "addr:street": "Boulevard Thimens",
+        "amenity": "library",
+        "building": "yes",
+        "building:levels": "2",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque du Boisé",
+        "phone": "+1-514-855-6130",
+        "source": "Bing",
+        "website": "https://montreal.ca/lieux/bibliotheque-du-boise",
+        "wheelchair": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.7050752,
+          45.5042664
+        ]
+      },
+      "id": "way/266434824"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/308481767",
+        "access": "yes",
+        "addr:city": "Montréal",
+        "addr:housenumber": "500",
+        "addr:postcode": "H2S 0C4",
+        "addr:street": "Boulevard Rosemont",
+        "amenity": "library",
+        "building": "civic",
+        "check_date": "2025-01-08",
+        "check_date:internet_access": "2025-01-08",
+        "elevator": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "Bibliothèque Marc-Favreau",
+        "opening_hours": "Sa,Su 10:00-17:00; Mo-Fr 10:00-18:00",
+        "operator": "Ville de Montréal",
+        "phone": "+1-514-872-7272",
+        "source": "http://ville.montreal.qc.ca/portal/page?_pageid=4276,5623059&_dad=portal&_schema=PORTAL&section=accueil&lieu=438",
+        "website": "https://montreal.ca/lieux/bibliotheque-marc-favreau",
+        "wheelchair": "yes",
+        "wikidata": "Q81843789",
+        "wikipedia": "fr:Bibliothèque Marc-Favreau",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5971276,
+          45.5318321
+        ]
+      },
+      "id": "way/308481767"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/366524826",
+        "addr:city": "Montréal",
+        "addr:housenumber": "1380",
+        "addr:postcode": "H4L 2H2",
+        "addr:province": "Quebec",
+        "addr:street": "Rue de l'Église",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque du Vieux-Saint-Laurent",
+        "opening_hours": "Mo-We 10:00-20:00; Th-Fr 10:00-18:00; Sa-Su 10:00-17:00",
+        "operator:type": "government",
+        "website": "https://montreal.ca/lieux/bibliotheque-du-vieux-saint-laurent",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6764136,
+          45.5126504
+        ]
+      },
+      "id": "way/366524826"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/369097091",
+        "amenity": "library",
+        "building": "public",
+        "name": "Bibliothèque publique de Pointe-Claire – succursale Valois",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.7925808,
+          45.4543933
+        ]
+      },
+      "id": "way/369097091"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/387687679",
+        "addr:city": "Mont-Royal",
+        "addr:housenumber": "1967",
+        "addr:province": "QC",
+        "addr:street": "Boulevard Graham",
+        "amenity": "library",
+        "building": "government",
+        "building:levels": "2",
+        "name": "Bibliothèque Reginald-Dawson",
+        "opening_hours": "Mo-Th 10:00-21:00; Fr 10:00-18:00; Sa 10:00-17:00; Su 12:00-17:00",
+        "operator": "Ville de Mont-Royal",
+        "roof:shape": "flat",
+        "wikidata": "Q55138442",
+        "wikipedia": "fr:Bibliothèque Reginald-J.-P.-Dawson",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6465169,
+          45.5139857
+        ]
+      },
+      "id": "way/387687679"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/499511389",
+        "addr:city": "Dollard-Des-Ormeaux",
+        "addr:housenumber": "12001",
+        "addr:postcode": "H9B 2A7",
+        "addr:street": "Boulevard De Salaberry",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "name": "Bibliothèque publique de Dollard-des-Ormeaux",
+        "opening_hours": "Mo-Th 10:00-21:00, Fr 10:00-18:00, Sa-Su 10:00-17:00",
+        "operator": "Ville de Dollard-des-Ormeaux",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.8087731,
+          45.4845187
+        ]
+      },
+      "id": "way/499511389"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/657758468",
+        "addr:city": "Montréal",
+        "addr:housenumber": "5955",
+        "addr:postcode": "H4H 1H6",
+        "addr:province": "Québec",
+        "addr:street": "Rue Bannantyne",
+        "amenity": "library",
+        "attribution": "Natural Resources Canada",
+        "building": "yes",
+        "canvec:CODE": "2010252",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Jacqueline-de-Repentigny",
+        "opening_hours": "Mo-Fr 10:00-18:00; Sa, Su 10:00-17:00",
+        "operator": "Ville de Montréal",
+        "operator:type": "government",
+        "operator:wikidata": "Q340",
+        "source": "CanVec_Import_2009",
+        "website": "https://montreal.ca/lieux/bibliotheque-jacqueline-de-repentigny",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5778979,
+          45.448547
+        ]
+      },
+      "id": "way/657758468"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1034319536",
+        "addr:city": "Montréal",
+        "addr:housenumber": "7070",
+        "addr:postcode": "H1J 1G4",
+        "addr:street": "Rue Jarry Est",
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "ZAP",
+        "internet_access:password": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque du Haut-Anjou",
+        "website": "https://montreal.ca/lieux/bibliotheque-du-haut-anjou",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5756472,
+          45.6011364
+        ]
+      },
+      "id": "way/1034319536"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1199684762",
+        "amenity": "library",
+        "check_date": "2025-10-09",
+        "check_date:internet_access": "2025-10-09",
+        "internet_access": "wlan",
+        "level": "1-4",
+        "name": "Bibliothèque R.-Howard-Webster",
+        "name:en": "R. Howard Webster Library",
+        "name:fr": "Bibliothèque R.-Howard-Webster",
+        "note": "Valid student/faculty/staff Concordia ID card required 23:00-07:00 and on University holidays",
+        "opening_hours": "Jan 05-12 Mo-Fr 09:00-21:00; Jan 05-12,May 05-Sep 01 Sa,Su 10:00-21:00; Jan 13-May 04,Sep 02-Dec 23 00:00-24:00; May 05-Sep 01 Mo-Th 09:00-22:00; May 05-Sep 01 Fr 09:00-21:00; May 19,Jun 24,Jul 01,Sep 01,Dec 24-Jan 04 off",
+        "opening_hours:url": "https://library.concordia.ca/locations/index.php",
+        "website": "https://library.concordia.ca/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5779337,
+          45.4968158
+        ]
+      },
+      "id": "node/1199684762"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1377904754",
+        "access": "yes",
+        "air_conditioning": "no",
+        "amenity": "library",
+        "building": "container",
+        "name": "Bibliothèque de Plage de Verdun",
+        "opening_hours": "Fr-Su 10:00-17:00; Aug 26-Jun 24 off",
+        "operator": "Ville de Montréal",
+        "operator:type": "government",
+        "polling_station": "no",
+        "website": "https://montreal.ca/lieux/plage-urbaine-de-verdun",
+        "wheelchair": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5607122,
+          45.4625617
+        ]
+      },
+      "id": "way/1377904754"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1433216456",
+        "addr:city": "Montréal",
+        "addr:housenumber": "10300",
+        "addr:province": "QC",
+        "addr:street": "Rue Lajeunesse",
+        "amenity": "library",
+        "name": "Bibliothèque Hélène-Charbonneau",
+        "old_name": "Bibliothèque d'Ahuntsic",
+        "operator": "Ville de Montréal",
+        "phone": "+1 514 872 0568",
+        "website": "https://montreal.ca/lieux/bibliotheque-dahuntsic",
+        "wheelchair": "yes",
+        "wikidata": "Q27942297",
+        "wikipedia": "fr:Bibliothèque d'Ahuntsic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6626049,
+          45.553483
+        ]
+      },
+      "id": "node/1433216456"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1486119656",
+        "addr:city": "Montréal",
+        "addr:housenumber": "1870",
+        "addr:postcode": "H1W 2Y6",
+        "addr:province": "Québec",
+        "addr:street": "Rue Davidson",
+        "amenity": "library",
+        "building:part": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "Bibliothèque d'Hochelaga",
+        "opening_hours": "Mo,Th,Fr 10:00-18:00; Tu,We 13:00-18:00; Sa,Su 10:00-16:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-hochelaga",
+        "wikidata": "Q64450786",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5455697,
+          45.5423301
+        ]
+      },
+      "id": "way/1486119656"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1573462626",
+        "addr:city": "Montréal",
+        "addr:housenumber": "1050",
+        "addr:province": "QC",
+        "addr:street": "Rue d'Hibernia",
+        "amenity": "library",
+        "name": "Bibliothèque Saint-Charles",
+        "opening_hours": "Mo-Fr 09:00-18:00; Tu,We 13:00-20:00; Sa 10:00-17:00; Su 12:00-17:00",
+        "operator": "Ville de Montréal",
+        "website": "https://montreal.ca/lieux/bibliotheque-saint-charles"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5635716,
+          45.4791571
+        ]
+      },
+      "id": "node/1573462626"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2296203845",
+        "addr:city": "Montréal",
+        "addr:housename": "Complexe William-Hingston",
+        "addr:housenumber": "421",
+        "addr:postcode": "H3N 1K2",
+        "addr:province": "Québec",
+        "addr:street": "Rue Saint-Roch",
+        "amenity": "library",
+        "name": "Bibliothèque de Parc-Extension",
+        "opening_hours": "Mo, Fr 12:00-18:00; Tu, We 10:00-20:00; Th 10:00-18:00; Sa 10:00-17:00; Su 11:00-17:00",
+        "phone": "+1-514-872-6071",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-parc-extension",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6289844,
+          45.5314163
+        ]
+      },
+      "id": "node/2296203845"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2500240141",
+        "addr:housenumber": "5851",
+        "addr:postcode": "H4W 2X8",
+        "addr:province": "QC",
+        "addr:street": "Boulevard Cavendish",
+        "addr:suburb": "Côte Saint-Luc",
+        "amenity": "library",
+        "internet_access": "wlan",
+        "name": "Eleanor London Côte Saint-Luc Public Library",
+        "phone": "+1 514 485 8659",
+        "website": "https://csllibrary.org/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6642474,
+          45.4775965
+        ]
+      },
+      "id": "node/2500240141"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2505201225",
+        "addr:city": "Montréal",
+        "addr:housename": "AEELI",
+        "addr:housenumber": "2035",
+        "addr:postcode": "H2X 2T3",
+        "addr:province": "QC",
+        "addr:street": "Boulevard Saint-Laurent",
+        "amenity": "library",
+        "books": "anarchism",
+        "check_date": "2025-08-28",
+        "contact:email": "dira@riseup.net",
+        "name": "Bibliothèque DIRA",
+        "opening_hours": "Tu-Fr 17:00-20:00; Sa 14:00-17:00; PH off",
+        "operator": "Bibliothèque DIRA",
+        "operator:type": "community",
+        "phone": "+1-514-843-2018",
+        "start_date": "2005",
+        "website": "https://bibliothequedira.wordpress.com/",
+        "wheelchair": "no",
+        "wikidata": "Q5287679",
+        "wikipedia": "fr:L'Insoumise (librairie)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5674635,
+          45.5117249
+        ]
+      },
+      "id": "node/2505201225"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2717319167",
+        "addr:housenumber": "3755",
+        "addr:street": "Botrel",
+        "amenity": "library",
+        "contact:phone": "+1-514-872-2398",
+        "contact:website": "http://ville.montreal.qc.ca/portal/page?_pageid=4276,5623059&_dad=portal&_schema=PORTAL&section=accueil&lieu=35",
+        "name": "Bibliothèque de Notre-Dame-de-Grâce",
+        "opening_hours": "Tu-We 12:00-20:00;Th-Fr 10:00-18:00;Sa-Su 10:00-17:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-notre-dame-de-grace"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6143992,
+          45.4755031
+        ]
+      },
+      "id": "node/2717319167"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3134022378",
+        "addr:city": "Montréal",
+        "addr:housenumber": "110",
+        "addr:postcode": "H8Y 1G8",
+        "addr:street": "Rue Cartier",
+        "amenity": "library",
+        "name": "Bibliothèque de Roxboro",
+        "website": "https://montreal.ca/lieux/bibliotheque-william-g-boll"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.8145453,
+          45.5026224
+        ]
+      },
+      "id": "node/3134022378"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140448822",
+        "addr:city": "Montréal",
+        "addr:housenumber": "2093",
+        "addr:postcode": "H2L 3C9",
+        "addr:street": "Rue de la Visitation",
+        "amenity": "library",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "level": "3",
+        "name": "Bibliothèque Père-Ambroise",
+        "opening_hours": "Tu,We 10:00-20:00; Th,Fr 10:00-18:00; Sa 10:00-17:00; Su 12:00-17:00; Mo 10:00-18:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-pere-ambroise"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5626849,
+          45.5227932
+        ]
+      },
+      "id": "node/3140448822"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140449616",
+        "addr:city": "Montréal",
+        "addr:housenumber": "8420",
+        "addr:postcode": "H1R 3G5",
+        "addr:street": "Boulevard Lacordaire",
+        "amenity": "library",
+        "name": "Bibliothèque de Saint-Léonard",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-saint-leonard",
+        "wikidata": "Q27508748",
+        "wikipedia": "fr:Bibliothèque de Saint-Léonard"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5977342,
+          45.5866552
+        ]
+      },
+      "id": "node/3140449616"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140460420",
+        "addr:city": "Montréal",
+        "addr:housenumber": "2550",
+        "addr:postcode": "H2K 1W7",
+        "addr:province": "QC",
+        "addr:street": "Rue Ontario Est",
+        "air_conditioning": "yes",
+        "amenity": "library",
+        "email": "bibliofrontenac@montreal.ca",
+        "name": "Bibliothèque Frontenac",
+        "opening_hours": "Mo,Tu,Th,Fr 10:00-18:00; We 10:00-19:00; Sa 10:00-17:00; Su 12:00-17:00",
+        "phone": "+1-514-872-7888",
+        "website": "https://montreal.ca/lieux/bibliotheque-frontenac",
+        "wheelchair": "yes",
+        "wikidata": "Q24932109",
+        "wikipedia": "fr:Bibliothèque Frontenac"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5517134,
+          45.5329177
+        ]
+      },
+      "id": "node/3140460420"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140464836",
+        "addr:city": "Montréal",
+        "addr:housenumber": "7601",
+        "addr:postcode": "H2A 3L6",
+        "addr:street": "Rue François-Perrault",
+        "amenity": "library",
+        "name": "Bibliothèque de Saint-Michel",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-saint-michel"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6020202,
+          45.5621974
+        ]
+      },
+      "id": "node/3140464836"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140474576",
+        "addr:city": "Montréal",
+        "addr:housenumber": "4740",
+        "addr:postcode": "H1H 1V2",
+        "addr:street": "Rue De Charleroi",
+        "amenity": "library",
+        "name": "Bibliothèque de Charleroi",
+        "website": "https://montreal.ca/lieux/bibliotheque-yves-ryan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6315415,
+          45.5965067
+        ]
+      },
+      "id": "node/3140474576"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140481409",
+        "addr:city": "Montréal",
+        "addr:housenumber": "7500",
+        "addr:postcode": "H1K 3X9",
+        "addr:street": "Avenue Goncourt",
+        "amenity": "library",
+        "name": "Bibliothèque Jean-Corbeil",
+        "opening_hours": "Mo-Th 00:00-20:00; Fr 00:00-18:00; Su 00:00-17:00; Sa off",
+        "website": "https://montreal.ca/lieux/bibliotheque-jean-corbeil"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5587928,
+          45.6030237
+        ]
+      },
+      "id": "node/3140481409"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140494850",
+        "addr:city": "Montréal",
+        "addr:housenumber": "5900",
+        "addr:postcode": "H4J 1J8",
+        "addr:street": "Rue De Salaberry",
+        "amenity": "library",
+        "name": "Bibliothèque de Cartierville",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-cartierville"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.713004,
+          45.5271591
+        ]
+      },
+      "id": "node/3140494850"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140501163",
+        "addr:city": "Montréal",
+        "addr:housenumber": "4170",
+        "addr:postcode": "H4J 1H1",
+        "addr:street": "Rue De Salaberry",
+        "amenity": "library",
+        "name": "Bibliothèque De Salaberry",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-salaberry"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.7038342,
+          45.5346141
+        ]
+      },
+      "id": "node/3140501163"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140551828",
+        "addr:city": "Montréal",
+        "addr:housenumber": "4707",
+        "addr:postcode": "H4C 1S9",
+        "addr:street": "Rue Notre-Dame Ouest",
+        "amenity": "library",
+        "name": "Bibliothèque de Saint-Henri",
+        "opening_hours": "Mo, Th, Fr 10:00-18:00; Tu 13:00-20:00; We 10:00-20:00; Sa 10:00-17:00; Su 12:00-17:00",
+        "phone": "+1 514-872-2879",
+        "website": "https://montreal.ca/lieux/bibliotheque-saint-henri"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5891097,
+          45.4726461
+        ]
+      },
+      "id": "node/3140551828"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140555107",
+        "addr:city": "Montréal",
+        "addr:housenumber": "183",
+        "addr:postcode": "H8R 1B1",
+        "addr:street": "Rue des Érables",
+        "amenity": "library",
+        "name": "Bibliothèque de Saint-Pierre",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-saint-pierre"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6514999,
+          45.4457731
+        ]
+      },
+      "id": "node/3140555107"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140556525",
+        "addr:city": "Montréal",
+        "addr:housenumber": "2450",
+        "addr:postcode": "H3J 1L8",
+        "addr:street": "Rue Workman",
+        "amenity": "library",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "internet_access:ssid": "MTL-WiFi",
+        "level": "0;1",
+        "name": "Bibliothèque Réjean-Ducharme",
+        "opening_hours": "Mo 12:00-18:00; Tu 10:00-20:00; We 13:00-20:00; Th, Fr 10:00-18:00; Sa, Su 10:00-17:00",
+        "operator": "Ville de Montréal",
+        "operator:type": "government",
+        "phone": "+1 514 872-2001",
+        "website": "https://montreal.ca/lieux/bibliotheque-rejean-ducharme",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5750672,
+          45.4836019
+        ]
+      },
+      "id": "node/3140556525"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140560513",
+        "addr:city": "Montréal",
+        "addr:housenumber": "6052",
+        "addr:postcode": "H4E 3E6",
+        "addr:street": "Boulevard Monk",
+        "amenity": "library",
+        "check_date:opening_hours": "2024-09-01",
+        "name": "Bibliothèque Marie-Uguay",
+        "opening_hours": "Su 12:00-17:00; Sa 10:00-17:00; Mo,Th,Fr 10:00-18:00; Tu 13:00-20:00; We 10:00-20:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-marie-uguay"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5954481,
+          45.4576905
+        ]
+      },
+      "id": "node/3140560513"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140563632",
+        "addr:city": "Montréal",
+        "addr:housenumber": "6707",
+        "addr:postcode": "H2G 2P8",
+        "addr:street": "Avenue De Lorimier",
+        "amenity": "library",
+        "name": "Bibliothèque de La Petite-Patrie",
+        "opening_hours": "Mo,Tu 10:00-18:00; We 13:00-20:00; Th,Fr 10:00-18:00; Sa,Su 10:00-17:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-la-petite-patrie",
+        "wikidata": "Q81843675"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5982926,
+          45.5474061
+        ]
+      },
+      "id": "node/3140563632"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140563724",
+        "addr:city": "Montréal",
+        "addr:housenumber": "6473",
+        "addr:postcode": "H1N 1C5",
+        "addr:province": "QC",
+        "addr:street": "Rue Sherbrooke Est",
+        "amenity": "library",
+        "check_date:opening_hours": "2025-11-11",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque Langelier",
+        "opening_hours": "Sa-Mo 10:00-17:00; Tu,We 12:00-22:00; Th,Fr 10:00-18:00",
+        "phone": "+1-514-872-2640",
+        "website": "https://montreal.ca/lieux/bibliotheque-langelier",
+        "wheelchair": "yes",
+        "wikidata": "Q27097050",
+        "wikipedia": "fr:Bibliothèque Langelier"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.544147,
+          45.5816816
+        ]
+      },
+      "id": "node/3140563724"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3140573805",
+        "addr:city": "Montréal",
+        "addr:housenumber": "8105",
+        "addr:postcode": "H1L 2K9",
+        "addr:province": "QC",
+        "addr:street": "Rue Hochelaga",
+        "amenity": "library",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "internet_access:ssid": "MTLWiFi",
+        "name": "Bibliothèque de Mercier",
+        "opening_hours": "Sa-Mo 10:00-17:00; Tu-Th 11:00-19:00; Fr10:00-18:00",
+        "phone": "+1-514-872-8738",
+        "website": "https://montreal.ca/lieux/bibliotheque-mercier"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5236768,
+          45.5955039
+        ]
+      },
+      "id": "node/3140573805"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3188873465",
+        "addr:city": "Montréal",
+        "addr:housenumber": "535",
+        "addr:postcode": "H2L 2P3",
+        "addr:province": "Québec",
+        "addr:street": "Avenue Viger Est",
+        "amenity": "library",
+        "name": "BAnQ Vieux-Montréal, Édifice Gilles-Hocquart"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5546515,
+          45.5132734
+        ]
+      },
+      "id": "node/3188873465"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3588548575",
+        "amenity": "library"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5917029,
+          45.5207623
+        ]
+      },
+      "id": "node/3588548575"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4022185267",
+        "addr:city": "Montréal",
+        "addr:housenumber": "6400",
+        "addr:postcode": "H4B 1H3",
+        "addr:province": "Québec",
+        "addr:street": "Avenue de Monkland",
+        "amenity": "library",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "Bibliothèque Benny",
+        "opening_hours": "Mo, Th-Fr 10:00-18:00; Tu-We 12:00-19:30; Sa-Su 10:00-17:00",
+        "website": "https://montreal.ca/lieux/bibliotheque-benny",
+        "wikidata": "Q24025394",
+        "wikipedia": "fr:Bibliothèque Benny"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6309558,
+          45.4663823
+        ]
+      },
+      "id": "node/4022185267"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4412516988",
+        "amenity": "library",
+        "check_date": "2023-04-21",
+        "level": "7",
+        "name": "Bibliothèque Louise-Lalonde-Lamarre",
+        "opening_hours": "\"Differs by week\"",
+        "opening_hours:url": "https://www.polymtl.ca/biblio/en/hours",
+        "operator": "Polytechnique Montréal",
+        "operator:type": "public",
+        "website": "https://www.polymtl.ca/biblio/en"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6142194,
+          45.5043842
+        ]
+      },
+      "id": "node/4412516988"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4723279250",
+        "addr:city": "Montréal",
+        "addr:housenumber": "465",
+        "addr:postcode": "H2J 1W3",
+        "addr:province": "Québec",
+        "addr:street": "Avenue du Mont-Royal Est",
+        "amenity": "library",
+        "internet_access": "wlan",
+        "internet_access:ssid": "MtlWifi",
+        "level": "0",
+        "name": "Bibliothèque du Plateau-Mont-Royal",
+        "name:en": "Plateau Mont-Royal Library",
+        "opening_hours": "Mo,Fr 12:00-18:00; Tu,We 10:00-20:00; Th 12:00-20:00; Sa 11:00-17:00; Su 12:00-17:00",
+        "operator": "Arrondissement du Plateau-Mont-Royal",
+        "phone": "+1-514-872-2270",
+        "website": "https://montreal.ca/lieux/bibliotheque-du-plateau-mont-royal",
+        "wheelchair": "yes",
+        "wikidata": "Q30737965"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5824623,
+          45.5248812
+        ]
+      },
+      "id": "node/4723279250"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4763192550",
+        "addr:city": "Montréal",
+        "addr:housenumber": "7355",
+        "addr:postcode": "H2R 2S5",
+        "addr:province": "QC",
+        "addr:street": "Avenue Christophe-Colomb",
+        "air_conditioning": "yes",
+        "amenity": "library",
+        "name": "Bibliothèque Le Prevost",
+        "opening_hours": "Mo 13:00-18:00; Tu 12:00-20:00; We 10:00-20:00; Th,Fr 10:00-18:00; Sa,Su 10:00-17:00; PH off",
+        "website": "https://montreal.ca/lieux/bibliotheque-le-prevost",
+        "wheelchair": "yes",
+        "wikidata": "Q28987310",
+        "wikipedia": "fr:Bibliothèque Le Prévost"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6145722,
+          45.5438649
+        ]
+      },
+      "id": "node/4763192550"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5064147563",
+        "amenity": "library",
+        "name": "Bibliothèque de Beaconsfield"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.8662924,
+          45.424311
+        ]
+      },
+      "id": "node/5064147563"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5189640458",
+        "addr:city": "Montréal",
+        "addr:housenumber": "2075",
+        "addr:postcode": "H2L 2Y4",
+        "addr:province": "QC",
+        "addr:street": "Rue Plessis",
+        "amenity": "library",
+        "email": "info@ccglm.org",
+        "facebook": "bibliolgbtqplus",
+        "lgbtq": "primary",
+        "name": "Bibliothèque à livres ouverts",
+        "opening_hours": "Mo,We 13:00-20:00; Tu-Su 13:00-18:00; Sa off",
+        "phone": "+1-514-528-8424",
+        "website": "http://biblio.ccglm.org/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5618534,
+          45.5243179
+        ]
+      },
+      "id": "node/5189640458"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5308341605",
+        "addr:city": "Montréal",
+        "addr:housenumber": "12002",
+        "addr:postcode": "H1G 3W1",
+        "addr:street": "Boulevard Rolland",
+        "amenity": "library",
+        "internet_access": "wlan",
+        "name": "Bibliothèque Julio-Jean-Pierre",
+        "website": "https://montreal.ca/lieux/bibliotheque-julio-jean-pierre-mcc"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6206211,
+          45.616093
+        ]
+      },
+      "id": "node/5308341605"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5851437281",
+        "amenity": "library",
+        "name": "Bibliotheque du Jardin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5579804,
+          45.5583452
+        ]
+      },
+      "id": "node/5851437281"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6577389356",
+        "addr:city": "Montréal",
+        "addr:housenumber": "4839",
+        "addr:postcode": "H2H 2A2",
+        "addr:province": "QC",
+        "addr:street": "Rue de Bordeaux",
+        "amenity": "library",
+        "entrance": "yes",
+        "name": "Centre de documentation Marius-Barbeau",
+        "office": "research",
+        "website": "https://www.cdmb.ca",
+        "wikidata": "Q16303531"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5768839,
+          45.5366865
+        ]
+      },
+      "id": "node/6577389356"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7356726095",
+        "amenity": "library",
+        "name": "Bibliothèque Saul-Bellow",
+        "opening_hours": "Mo-Th 10:00-21:00, Fr-Su 10:00-17:00",
+        "operator": "Ville de Montréal",
+        "website": "https://montreal.ca/lieux/bibliotheque-saul-bellow",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6916816,
+          45.4400376
+        ]
+      },
+      "id": "node/7356726095"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7357344596",
+        "addr:city": "Pierrefonds",
+        "addr:housenumber": "13555",
+        "addr:postcode": "H9A 1A6",
+        "addr:street": "Boulevard de Pierrefonds",
+        "amenity": "library",
+        "contact:phone": "+1-514-620-4181",
+        "name": "Bibliothèque de Pierrefonds",
+        "name:en": "Pierrefonds Public Library",
+        "website": "https://montreal.ca/lieux/bibliotheque-de-pierrefonds"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.8475197,
+          45.4960289
+        ]
+      },
+      "id": "node/7357344596"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/8353776205",
+        "access": "yes",
+        "amenity": "library",
+        "internet_access": "terminal",
+        "name": "Bibliothèque Interculturelle",
+        "operator": "Bibliothèques de Montréal",
+        "operator:type": "public",
+        "phone": "+1-514-868-4715",
+        "website": "https://montreal.ca/lieux/bibliotheque-interculturelle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.636872,
+          45.5032164
+        ]
+      },
+      "id": "node/8353776205"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9172190983",
+        "addr:city": "Montréal-Ouest",
+        "addr:housenumber": "41",
+        "addr:street": "Avenue Westminster North",
+        "amenity": "library",
+        "automatic_door": "no",
+        "entrance": "yes",
+        "name": "Montreal West Public Library",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6452588,
+          45.4529874
+        ]
+      },
+      "id": "node/9172190983"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9975870918",
+        "addr:city": "Lasalle",
+        "addr:postcode": "H8N 1S2",
+        "addr:province": "QC",
+        "addr:street": "Boulevard Newman",
+        "amenity": "library",
+        "internet_access": "no",
+        "name": "Bibliothèque l'Octogone",
+        "opening_hours": "closed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6353681,
+          45.4329011
+        ]
+      },
+      "id": "node/9975870918"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10778462877",
+        "addr:city": "Montréal",
+        "addr:housenumber": "2940",
+        "addr:postcode": "H3T 1B9",
+        "addr:province": "Québec",
+        "addr:street": "Chemin de la Côte-Sainte-Catherine",
+        "amenity": "library",
+        "name": "Bibliothèque d'Aménagement",
+        "opening_hours": "Mo-Th 08:00-21:00; Fr 08:00-20:00; Sa-Su 12:00-17:00; PH off",
+        "operator": "Université de Montréal",
+        "operator:type": "university",
+        "website": "https://bib.umontreal.ca/travailler/les-bibliotheques/amenagement"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6207826,
+          45.5048472
+        ]
+      },
+      "id": "node/10778462877"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10801652898",
+        "addr:city": "Montréal",
+        "addr:housenumber": "1001",
+        "addr:postcode": "H4A 3J1",
+        "addr:province": "QC",
+        "addr:street": "Boulevard Décarie",
+        "amenity": "library",
+        "name": "Centre de ressources McConnell - Bibliothèque médicale",
+        "name:en": "McConnell Resource Centre - Medical Library",
+        "name:fr": "Centre de ressources McConnell - Bibliothèque médicale",
+        "operator": "Université McGill",
+        "operator:en": "McGill University"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6019634,
+          45.4723804
+        ]
+      },
+      "id": "node/10801652898"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11385723637",
+        "addr:city": "Montréal",
+        "addr:housenumber": "9155",
+        "addr:postcode": "H2M 1Y8",
+        "addr:province": "QC",
+        "addr:street": "Rue Saint-Hubert",
+        "amenity": "library",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "internet_access:ssid": "eduroam",
+        "name": "Bibliothèque du Collège Ahuntsic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.641511,
+          45.5523067
+        ]
+      },
+      "id": "node/11385723637"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11570460851",
+        "addr:city": "Montréal",
+        "addr:housenumber": "4816",
+        "addr:postcode": "H2J 2N6",
+        "addr:street": "Rue Rivard",
+        "amenity": "library",
+        "leisure": "dance",
+        "name": "Bibliothèque de la Danse Vincent-Warren",
+        "phone": "+1-514-849-4929 x231",
+        "website": "http://bibliodanse.ca/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.586865,
+          45.526355
+        ]
+      },
+      "id": "node/11570460851"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11646932671",
+        "amenity": "library",
+        "attribution": "Natural Resources Canada",
+        "canvec:CODE": "2010252",
+        "name": "Pointe-Claire Public Library",
+        "source": "CanVec_Import_2009"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.816429,
+          45.4493041
+        ]
+      },
+      "id": "node/11646932671"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11830361796",
+        "addr:city": "Westmount",
+        "addr:housenumber": "1200",
+        "addr:postcode": "H3Z 1X4",
+        "addr:province": "QC",
+        "addr:street": "Avenue Atwater",
+        "addr:suburb": "Wesmount",
+        "amenity": "library",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "internet_access:operator": "Île Sans Fil",
+        "name": "Atwater Library & Montreal Children's Library",
+        "name:en": "Atwater Library",
+        "name:fr": "Bibliothèque Atwater",
+        "opening_hours": "Mo,We 10:00-20:00; Tu,Th,Fr 10:00-18:00; Sa 10:00-17:00",
+        "phone": "+1 514 935 7344",
+        "website": "https://www.atwaterlibrary.ca/",
+        "wheelchair": "yes",
+        "wikidata": "Q4818839",
+        "wikipedia": "fr:Bibliothèque Atwater"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.5841803,
+          45.4887201
+        ]
+      },
+      "id": "node/11830361796"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12518718121",
+        "addr:city": "Montréal",
+        "addr:housenumber": "5151",
+        "addr:postcode": "H3W 1M6",
+        "addr:province": "QC",
+        "addr:street": "Chemin de la Côte-Sainte-Catherine",
+        "amenity": "library",
+        "name": "Bibliothèque publique juive",
+        "name:en": "Jewish public Library",
+        "name:fr": "Bibliothèque publique juive"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6363136,
+          45.4890136
+        ]
+      },
+      "id": "node/12518718121"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12775749932",
+        "amenity": "library",
+        "level": "2",
+        "name": "Renaud Bray",
+        "website": "https://www.renaud-bray.com/accueil.aspx"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6475554,
+          45.5297422
+        ]
+      },
+      "id": "node/12775749932"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13296569667",
+        "amenity": "library",
+        "name": "Vanier Library (VL)",
+        "note": "Valid student/faculty/staff Concordia ID card required 23:00-07:00 and on University holidays",
+        "opening_hours": "Jan 05-12 Mo-Fr 09:00-21:00; Jan 05-12,May 05-Sep 01 Sa,Su 10:00-21:00; Jan 13-May 04,Sep 02-Dec 23 00:00-24:00; May 05-Sep 01 Mo-Th 09:00-22:00; May 05-Sep 01 Fr 09:00-21:00; May 19,Jun 24,Jul 01,Sep 01,Dec 24-Jan 04 off",
+        "opening_hours:url": "https://library.concordia.ca/locations/vanier.php",
+        "website": "https://library.concordia.ca/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.6384119,
+          45.4590645
+        ]
+      },
+      "id": "node/13296569667"
+    }
+  ]
+}

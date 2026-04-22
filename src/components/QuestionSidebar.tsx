@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { SidebarCloseIcon } from "lucide-react";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Sidebar,
     SidebarContent,
@@ -13,6 +14,8 @@ import {
 } from "@/components/ui/sidebar-l";
 import {
     autoSave,
+    displayLibraries,
+    displayMcDonalds,
     isLoading,
     questions,
     save,
@@ -33,6 +36,8 @@ export const QuestionSidebar = () => {
     const $questions = useStore(questions);
     const $autoSave = useStore(autoSave);
     const $isLoading = useStore(isLoading);
+    const $displayMcDonalds = useStore(displayMcDonalds);
+    const $displayLibraries = useStore(displayLibraries);
 
     return (
         <Sidebar>
@@ -44,6 +49,34 @@ export const QuestionSidebar = () => {
                         SidebarContext.get().setOpenMobile(false);
                     }}
                 />
+            </div>
+            <div className="mx-4 mt-4 flex flex-col gap-3">
+                <div className="flex items-center space-x-2">
+                    <Checkbox
+                        id="displayMcDonalds"
+                        checked={$displayMcDonalds}
+                        onCheckedChange={(checked) => displayMcDonalds.set(checked === true)}
+                    />
+                    <label
+                        htmlFor="displayMcDonalds"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Show McDonalds
+                    </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox
+                        id="displayLibraries"
+                        checked={$displayLibraries}
+                        onCheckedChange={(checked) => displayLibraries.set(checked === true)}
+                    />
+                    <label
+                        htmlFor="displayLibraries"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Show Libraries
+                    </label>
+                </div>
             </div>
             <SidebarContent>
                 {$questions.map((question) => {

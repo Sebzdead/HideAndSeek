@@ -27,7 +27,8 @@ export const LOCATION_FIRST_TAG: {
         | "tourism"
         | "leisure"
         | "diplomatic"
-        | "natural";
+        | "natural"
+        | "fast_food";
 } = {
     aquarium: "tourism",
     hospital: "amenity",
@@ -40,6 +41,10 @@ export const LOCATION_FIRST_TAG: {
     golf_course: "leisure",
     consulate: "diplomatic",
     park: "leisure",
+    airport: "amenity",
+    university: "amenity",
+    river: "natural",
+    mcdonalds: "fast_food",
 };
 
 export const BLANK_GEOJSON = {

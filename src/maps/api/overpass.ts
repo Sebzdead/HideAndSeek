@@ -98,6 +98,51 @@ export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
 ) => {
+    if (question.locationType === "mcdonalds" || question.locationType === "library") {
+        try {
+            const fileName = question.locationType === "mcdonalds" ? "McDonalds_cleaned.geojson" : "Libraries_cleaned.geojson";
+            const response = await fetch(`${import.meta.env.BASE_URL}/data/${fileName}`);
+            if (!response.ok) throw new Error("Failed to load curated data");
+            const geojson = await response.json();
+            
+            const points = turf.points([]);
+            geojson.features.forEach((feature: any, index: number) => {
+                let coords: [number, number] | null = null;
+                if (feature.geometry) {
+                    if (feature.geometry.type === 'Point') {
+                        coords = feature.geometry.coordinates as [number, number];
+                    } else {
+                        try {
+                            const centroid = turf.centroid(feature as any);
+                            coords = centroid.geometry.coordinates as [number, number];
+                        } catch {
+                            // fallback
+                        }
+                    }
+                }
+                if (coords) {
+                    let name = feature.properties?.["name:en"] ?? feature.properties?.["name"] ?? (question.locationType === "mcdonalds" ? "McDonald's" : "Library");
+                    if (question.locationType === "mcdonalds" || question.locationType === "library") {
+                         // Ensure uniqueness so Turf/Tentacles doesn't dedup them
+                         const street = feature.properties?.["addr:street"] ?? "";
+                         const num = feature.properties?.["addr:housenumber"] ?? "";
+                         if (street) {
+                             name = `${name} (${num} ${street})`.trim();
+                         } else {
+                             name = `${name} #${index + 1}`;
+                         }
+                    }
+                    if (!points.features.find((f: any) => f.properties.name === name)) {
+                        points.features.push(turf.point(coords, { name }));
+                    }
+                }
+            });
+            return points;
+        } catch (e) {
+            console.error("Error loading local curated data, falling back to Overpass:", e);
+        }
+    }
+
     const query = `
 [out:json][timeout:25];
 nwr["${LOCATION_FIRST_TAG[question.locationType]}"="${question.locationType}"](around:${turf.convertLength(

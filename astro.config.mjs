@@ -4,6 +4,8 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
+import fs from "fs";
+import path from "path";
 
 // https://astro.build/config
 export default defineConfig({
@@ -44,6 +46,48 @@ export default defineConfig({
             },
         }),
     ],
+    vite: {
+        plugins: [
+            {
+                name: "dev-save-curated",
+                configureServer(server) {
+                    server.middlewares.use((req, res, next) => {
+                        if (req.method === "POST" && req.url && req.url.includes("/api/save-curated")) {
+                            let body = "";
+                            req.on("data", (chunk) => {
+                                body += chunk.toString();
+                            });
+                            req.on("end", () => {
+                                try {
+                                    const { filename, geojson } = JSON.parse(body);
+                                    if (!filename || !geojson) {
+                                        res.statusCode = 400;
+                                        res.end(JSON.stringify({ error: "Missing data" }));
+                                        return;
+                                    }
+                                    const outDir = path.join(process.cwd(), "public", "data");
+                                    if (!fs.existsSync(outDir)) {
+                                        fs.mkdirSync(outDir, { recursive: true });
+                                    }
+                                    fs.writeFileSync(path.join(outDir, filename), JSON.stringify(geojson, null, 2));
+                                    res.statusCode = 200;
+                                    res.setHeader("Content-Type", "application/json");
+                                    res.end(JSON.stringify({ success: true }));
+                                } catch (e) {
+                                    res.statusCode = 500;
+                                    res.setHeader("Content-Type", "application/json");
+                                    // @ts-ignore
+                                    res.end(JSON.stringify({ error: e.message }));
+                                }
+                            });
+                            return;
+                        }
+                        next();
+                    });
+                },
+            },
+        ],
+    },
     devToolbar: {
         enabled: false,
     },

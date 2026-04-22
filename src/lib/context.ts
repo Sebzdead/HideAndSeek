@@ -107,6 +107,24 @@ export const displayHidingZones = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
+
+export const displayMcDonalds = persistentAtom<boolean>(
+    "displayMcDonalds",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+export const displayLibraries = persistentAtom<boolean>(
+    "displayLibraries",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
 export const displayHidingZonesOptions = persistentAtom<string[]>(
     "displayHidingZonesOptions",
     ["[railway=station]"],

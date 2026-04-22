@@ -1,0 +1,40 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { CuratorMap } from "@/components/CuratorMap";
+import fs from "fs";
+import path from "path";
+
+// Read the raw datasets at build/dev time
+const resourcesDir = path.join(process.cwd(), "Resources");
+
+let mcdonaldsData = { type: "FeatureCollection", features: [] };
+let librariesData = { type: "FeatureCollection", features: [] };
+
+try {
+    const mcdPath = path.join(resourcesDir, "McDonalds.geojson");
+    if (fs.existsSync(mcdPath)) {
+        mcdonaldsData = JSON.parse(fs.readFileSync(mcdPath, "utf-8"));
+    }
+} catch (e) {
+    console.error("Could not read McDonalds data", e);
+}
+
+try {
+    const libPath = path.join(resourcesDir, "Libraries.geojson");
+    if (fs.existsSync(libPath)) {
+        librariesData = JSON.parse(fs.readFileSync(libPath, "utf-8"));
+    }
+} catch (e) {
+    console.error("Could not read Libraries data", e);
+}
+---
+
+<Layout className="bg-white">
+    <main class="w-full h-screen">
+        <CuratorMap 
+            client:only="react" 
+            mcdonaldsData={mcdonaldsData} 
+            librariesData={librariesData} 
+        />
+    </main>
+</Layout>

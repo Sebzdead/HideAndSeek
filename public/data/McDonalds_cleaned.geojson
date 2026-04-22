@@ -869,102 +869,6 @@
     {
       "type": "Feature",
       "properties": {
-        "@id": "node/2496360553",
-        "addr:country": "CA",
-        "addr:housenumber": "7995",
-        "addr:postcode": "H1E 1N9",
-        "addr:province": "QC",
-        "addr:street": "Boulevard Henri Bourassa Est",
-        "addr:suburb": "RDP-Pointe-Aux-Trembles",
-        "amenity": "fast_food",
-        "brand": "McDonald's",
-        "brand:wikidata": "Q38076",
-        "brand:wikipedia": "en:McDonald's",
-        "cuisine": "burger",
-        "drive_through": "yes",
-        "internet_access": "wlan",
-        "internet_access:fee": "no",
-        "name": "McDonald's",
-        "phone": "+1 514 881 6012",
-        "takeaway": "yes",
-        "website": "http://www.mcdonalds.ca/"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -73.5825283,
-          45.6253197
-        ]
-      },
-      "id": "node/2496360553"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "node/2496360554",
-        "addr:housenumber": "7685",
-        "addr:postcode": "H1E 5M9",
-        "addr:province": "QC",
-        "addr:street": "Boulevard Maurice-Duplessis",
-        "addr:suburb": "RDP-Pointe-Aux-Trembles",
-        "amenity": "fast_food",
-        "brand": "McDonald's",
-        "brand:wikidata": "Q38076",
-        "brand:wikipedia": "en:McDonald's",
-        "cuisine": "burger",
-        "drive_through": "yes",
-        "internet_access": "wlan",
-        "internet_access:fee": "no",
-        "name": "McDonald's",
-        "phone": "+1 514 643 2892",
-        "takeaway": "yes",
-        "website": "www.mcdonalds.ca"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -73.5949811,
-          45.6280099
-        ]
-      },
-      "id": "node/2496360554"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "node/2496360555",
-        "addr:country": "CA",
-        "addr:housenumber": "12090",
-        "addr:postcode": "H1B 1C8",
-        "addr:province": "QC",
-        "addr:street": "Rue Sherbrooke Est",
-        "addr:suburb": "Montreal-Est",
-        "amenity": "fast_food",
-        "brand": "McDonald's",
-        "brand:wikidata": "Q38076",
-        "brand:wikipedia": "en:McDonald's",
-        "cuisine": "burger",
-        "drive_through": "yes",
-        "internet_access": "wlan",
-        "internet_access:fee": "no",
-        "internet_access:operator": "Île Sans Fil",
-        "name": "McDonald's",
-        "phone": "+1 514 645 1767",
-        "takeaway": "yes",
-        "website": "http://www.mcdonalds.ca/"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -73.5132055,
-          45.6442859
-        ]
-      },
-      "id": "node/2496360555"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "@id": "node/2496535290",
         "addr:housenumber": "7645",
         "addr:postcode": "H2A 3M4",
@@ -1686,36 +1590,6 @@
         ]
       },
       "id": "node/8032816992"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "node/8032816993",
-        "addr:city": "Montréal",
-        "addr:housenumber": "5",
-        "addr:postcode": "H3B 2G2",
-        "addr:province": "QC",
-        "addr:street": "Place Ville-Marie",
-        "addr:unit": "Local 11296",
-        "amenity": "fast_food",
-        "brand": "McDonald's",
-        "brand:wikidata": "Q38076",
-        "brand:wikipedia": "en:McDonald's",
-        "contact:phone": "+1-514-868-0632",
-        "cuisine": "burger",
-        "drive_through": "no",
-        "name": "McDonald's",
-        "opening_hours": "Mo-Fr 10:00-18:00",
-        "takeaway": "yes"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -73.5687892,
-          45.500765
-        ]
-      },
-      "id": "node/8032816993"
     },
     {
       "type": "Feature",
