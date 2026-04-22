@@ -220,9 +220,7 @@ export const ZoneSidebar = () => {
             for (const question of questions.get()) {
                 if (
                     question.id === "matching" &&
-                    (question.data.type === "same-first-letter-station" ||
-                        question.data.type === "same-length-station" ||
-                        question.data.type === "same-train-line")
+                    question.data.type === "metro-line"
                 ) {
                     const location = turf.point([
                         question.data.lng,
@@ -236,73 +234,36 @@ export const ZoneSidebar = () => {
                         ) as any,
                     );
 
-                    if (question.data.type === "same-train-line") {
-                        const nid = nearestTrainStation.properties.id as
-                            | string
-                            | undefined;
-                        if (!nid || !nid.includes("/")) {
-                            toast.warning(
-                                "Nearest station has no OSM id; skipping 'same train line' filter.",
-                            );
-                            continue;
-                        }
-
-                        const nodes = await trainLineNodeFinder(nid);
-
-                        if (nodes.length === 0) {
-                            toast.warning(
-                                `No train line found for ${extractStationName(
-                                    nearestTrainStation,
-                                )}`,
-                            );
-                            continue;
-                        } else {
-                            circles = circles.filter((circle) => {
-                                const idProp =
-                                    circle.properties.properties.id;
-                                if (!idProp || !idProp.includes("/"))
-                                    return false;
-                                const id = parseInt(idProp.split("/")[1]);
-
-                                return question.data.same
-                                    ? nodes.includes(id)
-                                    : !nodes.includes(id);
-                            });
-                        }
+                    const nid = nearestTrainStation.properties.id as
+                        | string
+                        | undefined;
+                    if (!nid || !nid.includes("/")) {
+                        toast.warning(
+                            "Nearest station has no OSM id; skipping 'metro line' filter.",
+                        );
+                        continue;
                     }
 
-                    const englishName = extractStationName(nearestTrainStation);
+                    const nodes = await trainLineNodeFinder(nid);
 
-                    if (!englishName)
-                        return toast.error("No English name found");
-
-                    if (question.data.type === "same-first-letter-station") {
-                        const letter = englishName[0].toUpperCase();
-
+                    if (nodes.length === 0) {
+                        toast.warning(
+                            `No train line found for ${extractStationName(
+                                nearestTrainStation,
+                            )}`,
+                        );
+                        continue;
+                    } else {
                         circles = circles.filter((circle) => {
-                            const name = extractStationName(circle.properties);
-                            if (!name) return false;
+                            const idProp =
+                                circle.properties.properties.id;
+                            if (!idProp || !idProp.includes("/"))
+                                return false;
+                            const id = parseInt(idProp.split("/")[1]);
 
                             return question.data.same
-                                ? name[0].toUpperCase() === letter
-                                : name[0].toUpperCase() !== letter;
-                        });
-                    } else if (question.data.type === "same-length-station") {
-                        const seekerLength = englishName.length;
-                        const comparison = question.data.lengthComparison;
-
-                        circles = circles.filter((circle) => {
-                            const name = extractStationName(circle.properties);
-                            if (!name) return false;
-
-                            if (comparison === "same") {
-                                return name.length === seekerLength;
-                            } else if (comparison === "shorter") {
-                                return name.length < seekerLength;
-                            } else if (comparison === "longer") {
-                                return name.length > seekerLength;
-                            }
-                            return false;
+                                ? nodes.includes(id)
+                                : !nodes.includes(id);
                         });
                     }
                 }

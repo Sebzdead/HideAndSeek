@@ -366,6 +366,7 @@ const tutorialSteps: TutorialStep[] = [
                                 color: "red",
                                 locationType: "theme_park",
                                 location: false,
+                                isInsideCircle: true,
                             }}
                         />
                     </SidebarMenu>

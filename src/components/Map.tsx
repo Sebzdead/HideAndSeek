@@ -20,6 +20,7 @@ import {
     followMe,
     gpsPosition,
     hiderModeEnabled,
+    displayMontrealDistricts,
     isLoading,
     leafletMapContext,
     mapGeoJSON,
@@ -242,6 +243,7 @@ export const Map = ({ className }: { className?: string }) => {
     const $permanentOverlay = useStore(permanentOverlay);
     const $displayMcDonalds = useStore(displayMcDonalds);
     const $displayLibraries = useStore(displayLibraries);
+    const $displayMontrealDistricts = useStore(displayMontrealDistricts);
     const map = useStore(leafletMapContext);
 
     const [metroLines, setMetroLines] = useState<any>(null);
@@ -251,6 +253,7 @@ export const Map = ({ className }: { className?: string }) => {
     const [poiData, setPoiData] = useState<any>(null);
     const [mcdonaldsData, setMcdonaldsData] = useState<any>(null);
     const [librariesData, setLibrariesData] = useState<any>(null);
+    const [montrealDistrictsData, setMontrealDistrictsData] = useState<any>(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -310,6 +313,14 @@ export const Map = ({ className }: { className?: string }) => {
                     setLibrariesData(lib);
                 } catch {
                     console.error("Could not load Libraries data");
+                }
+                try {
+                    const montreal = await fetch(
+                        `${import.meta.env.BASE_URL}/data/Montreal_cleaned.geojson`,
+                    ).then((r) => r.json());
+                    setMontrealDistrictsData(montreal);
+                } catch {
+                    console.error("Could not load Montreal districts data");
                 }
             };
             get();
@@ -580,9 +591,6 @@ export const Map = ({ className }: { className?: string }) => {
                                 ${name}
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 4px;">
-                                <button id="p-btn-radius" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Radius</button>
-                                <button id="p-btn-thermo" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Thermometer</button>
-                                <button id="p-btn-tent" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Tentacles</button>
                                 <button id="p-btn-match" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Matching</button>
                                 <button id="p-btn-meas" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Measuring</button>
                                 <button id="p-btn-copy" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Copy Coordinates</button>
@@ -591,51 +599,6 @@ export const Map = ({ className }: { className?: string }) => {
 
                         const lng = feature.geometry.coordinates[0];
                         const lat = feature.geometry.coordinates[1];
-
-                        const btnRadius =
-                            container.querySelector("#p-btn-radius");
-                        if (btnRadius)
-                            btnRadius.addEventListener("click", () => {
-                                map.closePopup();
-                                addQuestion({
-                                    id: "radius",
-                                    data: { lat, lng },
-                                });
-                            });
-
-                        const btnThermo =
-                            container.querySelector("#p-btn-thermo");
-                        if (btnThermo)
-                            btnThermo.addEventListener("click", () => {
-                                map.closePopup();
-                                const destination = turf.destination(
-                                    [lng, lat],
-                                    500,
-                                    90,
-                                    { units: "meters" },
-                                );
-                                addQuestion({
-                                    id: "thermometer",
-                                    data: {
-                                        latA: lat,
-                                        lngA: lng,
-                                        latB: destination.geometry
-                                            .coordinates[1],
-                                        lngB: destination.geometry
-                                            .coordinates[0],
-                                    },
-                                });
-                            });
-
-                        const btnTent = container.querySelector("#p-btn-tent");
-                        if (btnTent)
-                            btnTent.addEventListener("click", () => {
-                                map.closePopup();
-                                addQuestion({
-                                    id: "tentacles",
-                                    data: { lat, lng },
-                                });
-                            });
 
                         const btnMatch =
                             container.querySelector("#p-btn-match");
@@ -710,6 +673,22 @@ export const Map = ({ className }: { className?: string }) => {
 
         let mcdOverlay: L.GeoJSON | null = null;
         let libOverlay: L.GeoJSON | null = null;
+        let montrealDistrictsOverlay: L.GeoJSON | null = null;
+
+        if ($displayMontrealDistricts && montrealDistrictsData) {
+            montrealDistrictsOverlay = L.geoJSON(montrealDistrictsData, {
+                style: {
+                    color: "blue",
+                    weight: 3,
+                    fillColor: "transparent",
+                    fillOpacity: 0.1,
+                },
+            });
+            // @ts-expect-error type hint omission
+            montrealDistrictsOverlay.permanentGeoJSON = true;
+            montrealDistrictsOverlay.addTo(map);
+            montrealDistrictsOverlay.bringToFront();
+        }
 
         if ($displayMcDonalds && mcdonaldsData) {
             mcdOverlay = L.geoJSON(mcdonaldsData, {
@@ -726,7 +705,56 @@ export const Map = ({ className }: { className?: string }) => {
                     const addr = feature?.properties?.["addr:street"] 
                         ? `${feature.properties["addr:housenumber"] || ""} ${feature.properties["addr:street"]}` 
                         : "";
-                    layer.bindPopup(`<b>${name}</b><br/>${addr}`);
+                    const container = L.DomUtil.create("div");
+                    container.className = "min-w-[140px]";
+                    container.innerHTML = `
+                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; text-align: center;">
+                            ${name}
+                        </div>
+                        ${addr ? `<div style="font-size: 12px; margin-bottom: 8px; text-align: center;">${addr}</div>` : ""}
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <button id="p-btn-tent" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Tentacles</button>
+                            <button id="p-btn-copy" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Copy Coordinates</button>
+                        </div>
+                    `;
+
+                    const lng = feature.geometry.coordinates[0];
+                    const lat = feature.geometry.coordinates[1];
+
+                    const btnTent = container.querySelector("#p-btn-tent");
+                    if (btnTent)
+                        btnTent.addEventListener("click", () => {
+                            map.closePopup();
+                            addQuestion({
+                                id: "tentacles",
+                                data: { lat, lng, locationType: "mcdonalds" },
+                            });
+                        });
+
+                    const btnCopy = container.querySelector("#p-btn-copy");
+                    if (btnCopy)
+                        btnCopy.addEventListener("click", () => {
+                            map.closePopup();
+                            if (!navigator || !navigator.clipboard) {
+                                toast.error(
+                                    "Clipboard API not supported in your browser",
+                                );
+                                return;
+                            }
+                            toast.promise(
+                                navigator.clipboard.writeText(
+                                    `${Math.abs(lat)}°${lat > 0 ? "N" : "S"}, ${Math.abs(lng)}°${lng > 0 ? "E" : "W"}`,
+                                ),
+                                {
+                                    pending: "Writing...",
+                                    success: "Coordinates copied!",
+                                    error: "Error copying",
+                                },
+                                { autoClose: 1000 },
+                            );
+                        });
+
+                    layer.bindPopup(container);
                 }
             });
             // @ts-expect-error type hint omission
@@ -750,7 +778,56 @@ export const Map = ({ className }: { className?: string }) => {
                     const addr = feature?.properties?.["addr:street"] 
                         ? `${feature.properties["addr:housenumber"] || ""} ${feature.properties["addr:street"]}` 
                         : "";
-                    layer.bindPopup(`<b>${name}</b><br/>${addr}`);
+                    const container = L.DomUtil.create("div");
+                    container.className = "min-w-[140px]";
+                    container.innerHTML = `
+                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; text-align: center;">
+                            ${name}
+                        </div>
+                        ${addr ? `<div style="font-size: 12px; margin-bottom: 8px; text-align: center;">${addr}</div>` : ""}
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <button id="p-btn-tent" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Add Tentacles</button>
+                            <button id="p-btn-copy" class="bg-gray-100 hover:bg-gray-200 text-black font-medium px-2 py-1.5 rounded-sm text-xs shadow-sm transition-colors w-full text-left" type="button">Copy Coordinates</button>
+                        </div>
+                    `;
+
+                    const lng = feature.geometry.coordinates[0];
+                    const lat = feature.geometry.coordinates[1];
+
+                    const btnTent = container.querySelector("#p-btn-tent");
+                    if (btnTent)
+                        btnTent.addEventListener("click", () => {
+                            map.closePopup();
+                            addQuestion({
+                                id: "tentacles",
+                                data: { lat, lng, locationType: "library" },
+                            });
+                        });
+
+                    const btnCopy = container.querySelector("#p-btn-copy");
+                    if (btnCopy)
+                        btnCopy.addEventListener("click", () => {
+                            map.closePopup();
+                            if (!navigator || !navigator.clipboard) {
+                                toast.error(
+                                    "Clipboard API not supported in your browser",
+                                );
+                                return;
+                            }
+                            toast.promise(
+                                navigator.clipboard.writeText(
+                                    `${Math.abs(lat)}°${lat > 0 ? "N" : "S"}, ${Math.abs(lng)}°${lng > 0 ? "E" : "W"}`,
+                                ),
+                                {
+                                    pending: "Writing...",
+                                    success: "Coordinates copied!",
+                                    error: "Error copying",
+                                },
+                                { autoClose: 1000 },
+                            );
+                        });
+
+                    layer.bindPopup(container);
                 }
             });
             // @ts-expect-error type hint omission
@@ -764,8 +841,10 @@ export const Map = ({ className }: { className?: string }) => {
                 map.removeLayer(mcdOverlay);
             if (libOverlay && map.hasLayer(libOverlay))
                 map.removeLayer(libOverlay);
+            if (montrealDistrictsOverlay && map.hasLayer(montrealDistrictsOverlay))
+                map.removeLayer(montrealDistrictsOverlay);
         };
-    }, [map, mcdonaldsData, librariesData, $displayMcDonalds, $displayLibraries]);
+    }, [map, mcdonaldsData, librariesData, montrealDistrictsData, $displayMcDonalds, $displayLibraries, $displayMontrealDistricts]);
 
     const followMeMarkerRef = useMemo(
         () => ({ current: null as L.Marker | null }),
@@ -923,6 +1002,7 @@ export const Map = ({ className }: { className?: string }) => {
                                 data: {
                                     lat: e.latlng.lat,
                                     lng: e.latlng.lng,
+                                    locationType: "mcdonalds",
                                 },
                             });
                         },

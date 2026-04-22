@@ -1,37 +1,30 @@
 import "leaflet/dist/leaflet.css";
 
+import * as L from "leaflet";
 import * as turf from "@turf/turf";
 import type { FeatureCollection } from "geojson";
 import { useState } from "react";
-import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 
 type CuratorMapProps = {
-    mcdonaldsData: FeatureCollection;
-    librariesData: FeatureCollection;
+    montrealData: FeatureCollection;
 };
 
-export const CuratorMap = ({ mcdonaldsData, librariesData }: CuratorMapProps) => {
-    // We'll just track features in state so we can remove them.
-    const [mcd, setMcd] = useState<FeatureCollection>(mcdonaldsData);
-    const [lib, setLib] = useState<FeatureCollection>(librariesData);
+export const CuratorMap = ({ montrealData }: CuratorMapProps) => {
+    const [montreal, setMontreal] = useState<FeatureCollection>(montrealData);
     const [isSaving, setIsSaving] = useState(false);
 
     // Filter out deleted features
-    const removeFeature = (dataset: 'mcdonalds' | 'libraries', featureIndex: number) => {
-        if (dataset === 'mcdonalds') {
-            const newFeatures = mcd.features.filter((_, i) => i !== featureIndex);
-            setMcd({ ...mcd, features: newFeatures });
-        } else {
-            const newFeatures = lib.features.filter((_, i) => i !== featureIndex);
-            setLib({ ...lib, features: newFeatures });
-        }
+    const removeFeature = (featureIndex: number) => {
+        const newFeatures = montreal.features.filter((_, i) => i !== featureIndex);
+        setMontreal({ ...montreal, features: newFeatures });
     };
 
-    const saveData = async (dataset: 'mcdonalds' | 'libraries') => {
+    const saveData = async () => {
         setIsSaving(true);
         try {
-            const dataToSave = dataset === 'mcdonalds' ? mcd : lib;
-            const filename = dataset === 'mcdonalds' ? 'McDonalds_cleaned.geojson' : 'Libraries_cleaned.geojson';
+            const dataToSave = montreal;
+            const filename = 'Montreal_cleaned.geojson';
             
             const res = await fetch('/JetLagHideAndSeek/api/save-curated', {
                 method: 'POST',
@@ -54,23 +47,13 @@ export const CuratorMap = ({ mcdonaldsData, librariesData }: CuratorMapProps) =>
         <div className="relative w-full h-screen flex flex-col">
             <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] flex gap-4 bg-white/90 p-4 rounded-lg shadow-lg">
                 <div className="text-center">
-                    <p className="font-bold mb-2">McDonalds: {mcd.features.length}</p>
+                    <p className="font-bold mb-2">Montreal Districts: {montreal.features.length}</p>
                     <button 
-                        onClick={() => saveData('mcdonalds')} 
-                        className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded font-semibold"
-                        disabled={isSaving}
-                    >
-                        Save Cleaned McDonalds
-                    </button>
-                </div>
-                <div className="text-center">
-                    <p className="font-bold mb-2">Libraries: {lib.features.length}</p>
-                    <button 
-                        onClick={() => saveData('libraries')} 
+                        onClick={() => saveData()} 
                         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-semibold"
                         disabled={isSaving}
                     >
-                        Save Cleaned Libraries
+                        Save Cleaned Montreal Districts
                     </button>
                 </div>
             </div>
@@ -85,85 +68,36 @@ export const CuratorMap = ({ mcdonaldsData, librariesData }: CuratorMapProps) =>
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 
-                {mcd.features.map((feature, i) => {
-                    let coords: [number, number] | null = null;
-                    if (feature.geometry) {
-                        if (feature.geometry.type === 'Point') {
-                            coords = (feature.geometry as any).coordinates as [number, number];
-                        } else {
-                            try {
-                                const centroid = turf.centroid(feature as any);
-                                coords = centroid.geometry.coordinates as [number, number];
-                            } catch {
-                                // fallback
-                            }
-                        }
-                    }
-                    if (!coords) return null;
-                    
+                {montreal.features.map((feature, i) => {
                     return (
-                        <CircleMarker
-                            key={`mcd-${i}`}
-                            center={[coords[1], coords[0]]}
-                            radius={6}
-                            color="red"
-                            fillColor="yellow"
-                            fillOpacity={0.8}
-                        >
-                            <Popup>
-                                <div className="text-center">
-                                    <h3 className="font-bold mb-2">{feature.properties?.name || "McDonalds"}</h3>
-                                    <p className="text-sm mb-2">{feature.properties?.address || ""}</p>
-                                    <button 
-                                        onClick={() => removeFeature('mcdonalds', i)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded text-sm w-full"
-                                    >
-                                        Delete Point
+                        <GeoJSON
+                            key={`montreal-${i}`}
+                            data={feature as any}
+                            style={{
+                                color: "blue",
+                                weight: 2,
+                                fillOpacity: 0.2,
+                                fillColor: "blue",
+                            }}
+                            onEachFeature={(f, layer) => {
+                                const name = f.properties?.name || f.properties?.NOM || f.properties?.NOM_ARROND || "District";
+                                const container = L.DomUtil.create("div");
+                                container.className = "text-center";
+                                container.innerHTML = `
+                                    <h3 class="font-bold mb-2">${name}</h3>
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm w-full p-btn-del" type="button">
+                                        Delete District
                                     </button>
-                                </div>
-                            </Popup>
-                        </CircleMarker>
-                    );
-                })}
-
-                {lib.features.map((feature, i) => {
-                    let coords: [number, number] | null = null;
-                    if (feature.geometry) {
-                        if (feature.geometry.type === 'Point') {
-                            coords = (feature.geometry as any).coordinates as [number, number];
-                        } else {
-                            try {
-                                const centroid = turf.centroid(feature as any);
-                                coords = centroid.geometry.coordinates as [number, number];
-                            } catch {
-                                // fallback
-                            }
-                        }
-                    }
-                    if (!coords) return null;
-                    
-                    return (
-                        <CircleMarker
-                            key={`lib-${i}`}
-                            center={[coords[1], coords[0]]}
-                            radius={6}
-                            color="darkblue"
-                            fillColor="blue"
-                            fillOpacity={0.8}
-                        >
-                            <Popup>
-                                <div className="text-center">
-                                    <h3 className="font-bold mb-2">{feature.properties?.name || "Library"}</h3>
-                                    <p className="text-sm mb-2">{feature.properties?.address || ""}</p>
-                                    <button 
-                                        onClick={() => removeFeature('libraries', i)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded text-sm w-full"
-                                    >
-                                        Delete Point
-                                    </button>
-                                </div>
-                            </Popup>
-                        </CircleMarker>
+                                `;
+                                const btnDel = container.querySelector(".p-btn-del");
+                                if (btnDel) {
+                                    btnDel.addEventListener("click", () => {
+                                        removeFeature(i);
+                                    });
+                                }
+                                layer.bindPopup(container);
+                            }}
+                        />
                     );
                 })}
             </MapContainer>

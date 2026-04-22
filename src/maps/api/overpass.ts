@@ -19,11 +19,12 @@ import {
 } from "./constants";
 import { fetchLocalLandmarks } from "./landmarks";
 import type {
+    APILocations,
     EncompassingTentacleQuestionSchema,
-    HomeGameMatchingQuestions,
-    HomeGameMeasuringQuestions,
-    QuestionSpecificLocation,
+    HidingZoneMatchingQuestions,
+    HidingZoneMeasuringQuestions,
 } from "./types";
+import { QuestionSpecificLocation } from "./types";
 import { CacheType } from "./types";
 
 export const getOverpassData = async (
@@ -406,7 +407,7 @@ export const findPlacesSpecificInZone = async (
 };
 
 export const nearestToQuestion = async (
-    question: HomeGameMatchingQuestions | HomeGameMeasuringQuestions,
+    question: HidingZoneMatchingQuestions | HidingZoneMeasuringQuestions,
 ) => {
     if (
         ["airport", "hospital", "university", "river", "park"].includes(
@@ -433,10 +434,10 @@ export const nearestToQuestion = async (
                 location: false,
                 locationType: question.type as any,
                 drag: false,
+                isInsideCircle: true,
                 color: "black",
                 collapsed: false,
             },
-            "Finding matching locations...",
         );
         radius += 30;
         if (radius > 1000) break; // Safety break

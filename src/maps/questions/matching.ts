@@ -10,69 +10,28 @@ import {
 } from "@/lib/context";
 import {
     fetchLocalLandmarks,
-    findAdminBoundary,
-    findPlacesInZone,
-    LOCATION_FIRST_TAG,
-    prettifyLocation,
 } from "@/maps/api";
-import { geoSpatialVoronoi, modifyMapData, safeUnion } from "@/maps/geo-utils";
+import { geoSpatialVoronoi, modifyMapData } from "@/maps/geo-utils";
 import type {
-    APILocations,
     MatchingQuestion,
 } from "@/maps/schema";
 
 export const findMatchingPlaces = async (question: MatchingQuestion) => {
     switch (question.type) {
-        case "custom-points": {
-            return question.geo!;
+        case "airport": {
+            // Hardcoded airports as requested
+            return [
+                turf.point([-73.7408, 45.4706], { name: "Trudeau International Airport" }),
+                turf.point([-73.4169, 45.5175], { name: "Montreal Metropolitan Airport" })
+            ];
         }
         case "hospital":
         case "park":
-        case "university":
-        case "river":
-        case "airport": {
+        case "university": {
             return await fetchLocalLandmarks(question.type);
         }
-        case "museum":
-        case "cinema": {
-            const location = question.type as APILocations;
-
-            const data = await findPlacesInZone(
-                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
-                "nwr",
-                "center",
-                [],
-                60,
-            );
-
-            if (data.remark && data.remark.startsWith("runtime error")) {
-                toast.error(
-                    `Error finding ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()}.`,
-                );
-                return [];
-            }
-
-            if (data.elements.length === 0) {
-                toast.error(
-                    `No ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()} found.`,
-                );
-                return [];
-            }
-
-            return data.elements.map((x: any) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
-            );
-        }
+        default:
+            return [];
     }
 };
 
@@ -81,94 +40,43 @@ export const determineMatchingBoundary = _.memoize(
         let boundary;
 
         switch (question.type) {
-            case "same-first-letter-station":
-            case "same-length-station":
-            case "same-train-line": {
+            case "metro-line": {
                 return false;
             }
-            case "custom-zone": {
-                boundary = question.geo;
-                break;
-            }
-            case "zone": {
-                boundary = await findAdminBoundary(
-                    question.lat,
-                    question.lng,
-                    question.cat.adminLevel,
-                );
-
-                if (!boundary) {
-                    toast.error("No boundary found for this zone");
-                    throw new Error("No boundary found");
-                }
-                break;
-            }
-            case "letter-zone": {
-                const zone = await findAdminBoundary(
-                    question.lat,
-                    question.lng,
-                    question.cat.adminLevel,
-                );
-
-                if (!zone) {
-                    toast.error("No boundary found for this zone");
-                    throw new Error("No boundary found");
-                }
-
-                let englishName = zone.properties?.["name:en"];
-
-                if (!englishName) {
-                    const name = zone.properties?.name;
-
-                    if (/^[a-zA-Z]$/.test(name[0])) {
-                        englishName = name;
-                    } else {
-                        toast.error("No English name found for this zone");
-                        throw new Error("No English name");
+            case "district": {
+                try {
+                    // Fetch the cleaned Montreal geojson to find which district we are in
+                    const req = await fetch(`${import.meta.env.BASE_URL}/data/Montreal_cleaned.geojson`);
+                    const geojson = await req.json() as FeatureCollection<Polygon | MultiPolygon>;
+                    
+                    const point = turf.point([question.lng, question.lat]);
+                    
+                    for (const feature of geojson.features) {
+                        if (turf.booleanPointInPolygon(point, feature)) {
+                            boundary = feature;
+                            break;
+                        }
                     }
+
+                    if (!boundary) {
+                        toast.error("Point is not within any known Montreal district.");
+                        throw new Error("No boundary found");
+                    }
+                } catch (e) {
+                    console.error("Failed to process district boundary", e);
                 }
-
-                const letter = englishName[0].toUpperCase();
-
-                boundary = turf.featureCollection(
-                    osmtogeojson(
-                        await findPlacesInZone(
-                            `[admin_level=${question.cat.adminLevel}]["name:en"~"^${letter}.+"]`, // Regex is faster than filtering afterward
-                            `Finding zones that start with the same letter (${letter})...`,
-                            "relation",
-                            "geom",
-                            [
-                                `[admin_level=${question.cat.adminLevel}]["name"~"^${letter}.+"]`,
-                            ], // Regex is faster than filtering afterward
-                        ),
-                    ).features.filter(
-                        (x): x is Feature<Polygon | MultiPolygon> =>
-                            x.geometry &&
-                            (x.geometry.type === "Polygon" ||
-                                x.geometry.type === "MultiPolygon"),
-                    ),
-                );
-
-                // It's either simplify or crash. Technically this could be bad if someone's hiding zone was inside multiple zones, but that's unlikely.
-                boundary = safeUnion(
-                    turf.simplify(boundary, {
-                        tolerance: 0.001,
-                        highQuality: true,
-                        mutate: true,
-                    }),
-                );
-
                 break;
             }
             case "airport":
             case "hospital":
             case "park":
-            case "university":
-            case "river":
-            case "museum":
-            case "cinema":
-            case "custom-points": {
+            case "university": {
                 const data = await findMatchingPlaces(question);
+
+                if (!data || data.length === 0) {
+                    toast.error(`No ${question.type}s found nearby to match against.`);
+                    throw new Error("No places found");
+                }
 
                 const voronoi = geoSpatialVoronoi(data);
                 const point = turf.point([question.lng, question.lat]);
@@ -185,13 +93,11 @@ export const determineMatchingBoundary = _.memoize(
 
         return boundary;
     },
-    (question: MatchingQuestion & { geo?: unknown; cat?: unknown }) =>
+    (question: MatchingQuestion) =>
         JSON.stringify({
             type: question.type,
             lat: question.lat,
             lng: question.lng,
-            cat: question.cat,
-            geo: question.geo,
             entirety: polyGeoJSON.get()
                 ? polyGeoJSON.get()
                 : mapGeoLocation.get(),

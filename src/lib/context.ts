@@ -125,6 +125,15 @@ export const displayLibraries = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
+
+export const displayMontrealDistricts = persistentAtom<boolean>(
+    "displayMontrealDistricts",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
 export const displayHidingZonesOptions = persistentAtom<string[]>(
     "displayHidingZonesOptions",
     ["[railway=station]"],

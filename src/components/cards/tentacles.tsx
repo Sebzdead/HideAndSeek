@@ -27,7 +27,6 @@ import {
     NO_GROUP,
     type TentacleQuestion,
     tentacleQuestionSchema,
-    type TraditionalTentacleQuestion,
 } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
@@ -67,107 +66,24 @@ export const TentacleQuestionComponent = ({
             locked={!data.drag}
             setLocked={(locked) => questionModified((data.drag = !locked))}
         >
-            <SidebarMenuItem>
-                <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
-                    <Input
-                        type="number"
-                        className="rounded-md p-2 w-16"
-                        value={data.radius}
-                        onChange={(e) =>
-                            questionModified(
-                                (data.radius = parseFloat(e.target.value)),
-                            )
-                        }
-                        disabled={!data.drag || $isLoading}
-                    />
-                    <UnitSelect
-                        unit={data.unit}
-                        onChange={(unit) =>
-                            questionModified((data.unit = unit))
-                        }
-                        disabled={!data.drag || $isLoading}
-                    />
-                </div>
-            </SidebarMenuItem>
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Location Type"
-                    options={Object.fromEntries(
-                        tentacleQuestionSchema.options
-                            .filter((x) => x.description === NO_GROUP)
-                            .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.locationType),
-                            )
-                            .map((x) => [(x._def as any).value, x.description]),
-                    )}
-                    groups={Object.fromEntries(
-                        tentacleQuestionSchema.options
-                            .filter((x) => x.description !== NO_GROUP)
-                            .map((x) => [
-                                x.description,
-                                Object.fromEntries(
-                                    determineUnionizedStrings(
-                                        x.shape.locationType,
-                                    ).map((x) => [
-                                        (x._def as any).value,
-                                        x.description,
-                                    ]),
-                                ),
-                            ]),
-                    )}
+                    options={{
+                        mcdonalds: "McDonald's",
+                        library: "Libraries",
+                    }}
                     value={data.locationType}
-                    onValueChange={async (value) => {
-                        if (value === "custom") {
-                            const priorLocations = await findTentacleLocations(
-                                data as TraditionalTentacleQuestion,
-                            );
-
-                            data.locationType = "custom";
-                            data.places = priorLocations.features.map((x) => ({
-                                ...x,
-                                properties: {
-                                    ...x.properties,
-                                    name:
-                                        x.properties?.["name:en"] ??
-                                        x.properties?.name,
-                                },
-                            }));
-                            data.location = false;
-                        } else {
-                            data.location = false;
-                            data.locationType = value;
-                        }
+                    onValueChange={(value) => {
+                        data.location = false;
+                        data.locationType = value as any;
+                        data.radius = 1;
+                        data.unit = "kilometers";
                         questionModified();
                     }}
                     disabled={!data.drag || $isLoading}
                 />
             </SidebarMenuItem>
-            {data.locationType === "custom" && data.drag && (
-                <>
-                    <p className="px-2 mb-1 text-center text-orange-500">
-                        To modify tentacle locations, enable it:
-                        <Checkbox
-                            className="mx-1 my-1"
-                            checked={$drawingQuestionKey === questionKey}
-                            onCheckedChange={(checked) => {
-                                if (checked) {
-                                    drawingQuestionKey.set(questionKey);
-                                } else {
-                                    drawingQuestionKey.set(-1);
-                                }
-                            }}
-                            disabled={!data.drag || $isLoading}
-                        />
-                        and use the buttons at the bottom left of the map.
-                    </p>
-                    <div className="flex justify-center mb-2">
-                        <PresetsDialog
-                            data={data}
-                            presetTypeHint="custom-tentacles"
-                        />
-                    </div>
-                </>
-            )}
             <LatitudeLongitude
                 latitude={data.lat}
                 longitude={data.lng}
@@ -184,39 +100,59 @@ export const TentacleQuestionComponent = ({
                 disabled={!data.drag || $isLoading}
             />
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                <Suspense
-                    fallback={
-                        <div className="flex items-center justify-center w-full h-8">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="animate-spin"
-                            >
-                                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                            </svg>
-                        </div>
-                    }
-                >
-                    <TentacleLocationSelector
-                        data={data}
-                        promise={
-                            data.locationType === "custom"
-                                ? Promise.resolve(
-                                      turf.featureCollection(data.places),
-                                  )
-                                : findTentacleLocations(data)
+                <Select
+                    trigger="Hider Position"
+                    options={{
+                        true: "Inside Radius",
+                        false: "Outside Radius",
+                    }}
+                    value={data.isInsideCircle ? "true" : "false"}
+                    onValueChange={(value) => {
+                        data.isInsideCircle = value === "true";
+                        if (!data.isInsideCircle) {
+                            data.location = false;
                         }
-                        disabled={!data.drag || $isLoading}
-                    />
-                </Suspense>
+                        questionModified();
+                    }}
+                    disabled={!data.drag || $isLoading}
+                />
             </SidebarMenuItem>
+            {data.isInsideCircle && (
+                <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
+                    <Suspense
+                        fallback={
+                            <div className="flex items-center justify-center w-full h-8">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="animate-spin"
+                                >
+                                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                                </svg>
+                            </div>
+                        }
+                    >
+                        <TentacleLocationSelector
+                            data={data}
+                            promise={
+                                data.locationType === "custom"
+                                    ? Promise.resolve(
+                                          turf.featureCollection(data.places),
+                                      )
+                                    : findTentacleLocations(data)
+                            }
+                            disabled={!data.drag || $isLoading}
+                        />
+                    </Suspense>
+                </SidebarMenuItem>
+            )}
         </QuestionCard>
     );
 };

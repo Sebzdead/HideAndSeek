@@ -71,7 +71,7 @@ export const AddQuestionDialog = ({
                     locationType: "custom",
                     places: [],
                 }
-                : { lat: center.lat, lng: center.lng },
+                : { lat: center.lat, lng: center.lng, locationType: "mcdonalds" },
         });
         return true;
     };

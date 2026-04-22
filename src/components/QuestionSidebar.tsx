@@ -16,6 +16,7 @@ import {
     autoSave,
     displayLibraries,
     displayMcDonalds,
+    displayMontrealDistricts,
     isLoading,
     questions,
     save,
@@ -38,6 +39,7 @@ export const QuestionSidebar = () => {
     const $isLoading = useStore(isLoading);
     const $displayMcDonalds = useStore(displayMcDonalds);
     const $displayLibraries = useStore(displayLibraries);
+    const $displayMontrealDistricts = useStore(displayMontrealDistricts);
 
     return (
         <Sidebar>
@@ -51,6 +53,19 @@ export const QuestionSidebar = () => {
                 />
             </div>
             <div className="mx-4 mt-4 flex flex-col gap-3">
+                <div className="flex items-center space-x-2">
+                    <Checkbox
+                        id="displayMontrealDistricts"
+                        checked={$displayMontrealDistricts}
+                        onCheckedChange={(checked) => displayMontrealDistricts.set(checked === true)}
+                    />
+                    <label
+                        htmlFor="displayMontrealDistricts"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Show Montreal Districts
+                    </label>
+                </div>
                 <div className="flex items-center space-x-2">
                     <Checkbox
                         id="displayMcDonalds"

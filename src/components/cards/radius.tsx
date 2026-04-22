@@ -58,30 +58,6 @@ export const RadiusQuestionComponent = ({
             setLocked={(locked) => questionModified((data.drag = !locked))}
         >
             <SidebarMenuItem>
-                <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
-                    <Input
-                        type="number"
-                        className="rounded-md p-2 w-16"
-                        value={data.radius}
-                        disabled={!data.drag || $isLoading}
-                        onChange={(e) =>
-                            questionModified(
-                                (data.radius = parseFloat(e.target.value)),
-                            )
-                        }
-                    />
-                    <UnitSelect
-                        unit={
-                            data.unit === ("miles" as any)
-                                ? "kilometers"
-                                : data.unit
-                        }
-                        disabled={!data.drag || $isLoading}
-                        onChange={(unit) =>
-                            questionModified((data.unit = unit))
-                        }
-                    />
-                </div>
                 <div className="flex flex-col gap-2 mt-2 px-1">
                     <Label
                         className={cn(
@@ -89,11 +65,18 @@ export const RadiusQuestionComponent = ({
                             $isLoading && "text-muted-foreground",
                         )}
                     >
-                        Preset Leaps
+                        Radar Size:
                     </Label>
                     <ToggleGroup
                         className="grow flex-wrap justify-start"
                         type="single"
+                        value={
+                            data.radius === 200 ? "200m" :
+                            data.radius === 500 ? "500m" :
+                            data.radius === 1 ? "1km" :
+                            data.radius === 3 ? "3km" :
+                            data.radius === 5 ? "5km" : ""
+                        }
                         onValueChange={(value) => {
                             if (!value) return;
                             let dt = 200;
@@ -157,10 +140,11 @@ export const RadiusQuestionComponent = ({
                     className="grow"
                     type="single"
                     value={data.within ? "inside" : "outside"}
-                    onValueChange={(value: "inside" | "outside") =>
-                        questionModified((data.within = value === "inside"))
-                    }
-                    disabled={$hiderMode || !data.drag || $isLoading}
+                    onValueChange={(value: "inside" | "outside") => {
+                        if (!value) return;
+                        questionModified((data.within = value === "inside"));
+                    }}
+                    disabled={!data.drag || $isLoading}
                 >
                     <ToggleGroupItem value="outside">Outside</ToggleGroupItem>
                     <ToggleGroupItem value="inside">Inside</ToggleGroupItem>

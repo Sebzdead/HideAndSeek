@@ -43,8 +43,21 @@ export const adjustPerTentacle = async (
     mapData: any,
 ) => {
     if (mapData === null) return;
+
+    const circle = await arcBuffer(
+        turf.featureCollection([turf.point([question.lng, question.lat])]),
+        question.radius,
+        question.unit,
+    );
+
+    if (!question.isInsideCircle) {
+        return turf.difference(
+            turf.featureCollection([safeUnion(mapData) as any, circle]),
+        );
+    }
+
     if (question.location === false) {
-        throw new Error("Must have a location");
+        throw new Error("Must have a location when inside circle");
     }
 
     const rawPoints =
@@ -75,12 +88,6 @@ export const adjustPerTentacle = async (
     if (!correctPolygon) {
         return mapData;
     }
-
-    const circle = await arcBuffer(
-        turf.featureCollection([turf.point([question.lng, question.lat])]),
-        question.radius,
-        question.unit,
-    );
 
     return turf.intersect(
         turf.featureCollection([safeUnion(mapData), correctPolygon, circle]),

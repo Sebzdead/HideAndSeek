@@ -46,6 +46,8 @@ export const prettifyLocation = (
             return "Foreign Consulate";
         case "park":
             return "Park";
+        default:
+            return location;
     }
 };
 
