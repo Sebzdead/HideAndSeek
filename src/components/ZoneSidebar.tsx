@@ -24,7 +24,6 @@ import {
     displayHidingZonesStyle,
     isLoading,
     leafletMapContext,
-    planningModeEnabled,
     questionFinishedMapData,
     questions,
     trainStations,
@@ -220,10 +219,6 @@ export const ZoneSidebar = () => {
                 });
 
             for (const question of questions.get()) {
-                if (planningModeEnabled.get() && question.data.drag) {
-                    continue;
-                }
-
                 if (
                     question.id === "matching" &&
                     (question.data.type === "same-first-letter-station" ||
@@ -735,10 +730,6 @@ async function selectionProcess(
     ]);
 
     for (const question of questions.get()) {
-        if (planningModeEnabled.get() && question.data.drag) {
-            continue;
-        }
-
         if (
             question.id === "measuring" &&
             question.data.type === "rail-measure"

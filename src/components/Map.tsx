@@ -25,7 +25,6 @@ import {
     measureDistanceEnabled,
     measurePin,
     permanentOverlay,
-    planningModeEnabled,
     polyGeoJSON,
     questionFinishedMapData,
     questions,
@@ -40,6 +39,115 @@ import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletFullScreenButton } from "./LeafletFullScreenButton";
 import { MapPrint } from "./MapPrint";
 import { PolygonDraw } from "./PolygonDraw";
+
+type GeoSuccessHandler = (coords: { lat: number; lng: number }) => void;
+type GeoErrorHandler = (message: string) => void;
+
+const GEO_WATCH_OPTIONS_STRICT: PositionOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 5000,
+    timeout: 15000,
+};
+
+const GEO_WATCH_OPTIONS_FALLBACK: PositionOptions = {
+    enableHighAccuracy: false,
+    maximumAge: 30000,
+    timeout: 20000,
+};
+
+const getGeolocationErrorMessage = (error: GeolocationPositionError) => {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            return "Location permission denied. Allow location access in browser and system settings.";
+        case error.POSITION_UNAVAILABLE:
+            return "Location unavailable right now. Check GPS/Wi-Fi and try again.";
+        case error.TIMEOUT:
+            return "Location request timed out. Move to a spot with better signal and retry.";
+        default:
+            return "Unable to access location.";
+    }
+};
+
+const startGeoWatch = ({
+    onSuccess,
+    onError,
+}: {
+    onSuccess: GeoSuccessHandler;
+    onError: GeoErrorHandler;
+}) => {
+    if (typeof window === "undefined" || typeof navigator === "undefined") {
+        onError("Location is only available in a browser.");
+        return null;
+    }
+
+    if (!window.isSecureContext) {
+        onError("Location requires HTTPS (or localhost). Open the app in a secure context.");
+        return null;
+    }
+
+    if (!navigator.geolocation) {
+        onError("Geolocation is not supported by this browser.");
+        return null;
+    }
+
+    let activeWatchId: number | null = null;
+    let cancelled = false;
+    let startedFallback = false;
+
+    const forwardSuccess = (pos: GeolocationPosition) => {
+        onSuccess({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+        });
+    };
+
+    const startWatch = (options: PositionOptions) => {
+        activeWatchId = navigator.geolocation.watchPosition(
+            forwardSuccess,
+            (watchError) => {
+                if (
+                    !startedFallback &&
+                    options.enableHighAccuracy &&
+                    watchError.code !== watchError.PERMISSION_DENIED
+                ) {
+                    startedFallback = true;
+                    if (activeWatchId !== null) {
+                        navigator.geolocation.clearWatch(activeWatchId);
+                    }
+                    startWatch(GEO_WATCH_OPTIONS_FALLBACK);
+                    return;
+                }
+                onError(getGeolocationErrorMessage(watchError));
+            },
+            options,
+        );
+    };
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            if (cancelled) return;
+            forwardSuccess(pos);
+            startWatch(GEO_WATCH_OPTIONS_STRICT);
+        },
+        (currentPositionError) => {
+            if (cancelled) return;
+            if (currentPositionError.code === currentPositionError.PERMISSION_DENIED) {
+                onError(getGeolocationErrorMessage(currentPositionError));
+                return;
+            }
+            startWatch(GEO_WATCH_OPTIONS_FALLBACK);
+        },
+        GEO_WATCH_OPTIONS_STRICT,
+    );
+
+    return () => {
+        cancelled = true;
+        if (activeWatchId !== null) {
+            navigator.geolocation.clearWatch(activeWatchId);
+            activeWatchId = null;
+        }
+    };
+};
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
     switch (tileLayer) {
@@ -211,13 +319,74 @@ export const Map = ({ className }: { className?: string }) => {
         }
 
         if (metroStops) {
-            stopsOverlay = L.geoJSON(metroStops, {
+            const normalizeStationName = (name: string) =>
+                name
+                    .replace(/^station\s+/i, "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-zA-Z0-9\s-]/g, "")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .toLowerCase();
+
+            const rawFeatures = Array.isArray((metroStops as any)?.features)
+                ? (metroStops as any).features
+                : [];
+            const groupedByStation = new globalThis.Map<string, any[]>();
+
+            for (const feature of rawFeatures) {
+                const stopName = String(feature?.properties?.stop_name ?? "").trim();
+                if (!stopName) continue;
+                if (feature?.geometry?.type !== "Point") continue;
+
+                const key = normalizeStationName(stopName);
+                const list = groupedByStation.get(key) ?? [];
+                list.push(feature);
+                groupedByStation.set(key, list);
+            }
+
+            const dedupedFeatures = Array.from(groupedByStation.entries())
+                .map(([_, stationFeatures]) => {
+                    if (stationFeatures.length === 0) return null;
+                    const pickFrom = stationFeatures;
+
+                    const picked = pickFrom[0];
+                    const pointCoords = pickFrom
+                        .map((f) => f?.geometry?.coordinates)
+                        .filter(
+                            (coords: any) =>
+                                Array.isArray(coords) &&
+                                typeof coords[0] === "number" &&
+                                typeof coords[1] === "number",
+                        );
+                    if (pointCoords.length === 0) return null;
+
+                    // Average duplicate stop points so transfer stations render as one interactable node.
+                    const avgLng =
+                        pointCoords.reduce((sum: number, c: number[]) => sum + c[0], 0) /
+                        pointCoords.length;
+                    const avgLat =
+                        pointCoords.reduce((sum: number, c: number[]) => sum + c[1], 0) /
+                        pointCoords.length;
+
+                    return {
+                        ...picked,
+                        geometry: {
+                            ...picked.geometry,
+                            type: "Point",
+                            coordinates: [avgLng, avgLat],
+                        },
+                    };
+                })
+                .filter(Boolean);
+
+            const dedupedCollection = {
+                type: "FeatureCollection",
+                features: dedupedFeatures,
+            };
+
+            stopsOverlay = L.geoJSON(dedupedCollection as any, {
                 interactive: true,
-                filter: (feature: any) => {
-                    return ["1", "2", "4", "5"].includes(
-                        String(feature?.properties?.route_id),
-                    );
-                },
                 pointToLayer: (feature: any, latlng: any) =>
                     L.circleMarker(latlng, {
                         radius: 6,
@@ -522,6 +691,10 @@ export const Map = ({ className }: { className?: string }) => {
         () => ({ current: null as number | null }),
         [],
     );
+    const followMeCleanupRef = useMemo(
+        () => ({ current: null as (() => void) | null }),
+        [],
+    );
 
     const refreshQuestions = async (focus: boolean = false) => {
         if (!map) return;
@@ -567,13 +740,6 @@ export const Map = ({ className }: { className?: string }) => {
             mapGeoData = await applyQuestionsToMapGeoData(
                 $questions,
                 mapGeoData,
-                planningModeEnabled.get(),
-                (geoJSONObj, question) => {
-                    const geoJSONPlane = L.geoJSON(geoJSONObj);
-                    // @ts-expect-error This is a check such that only this type of layer is removed
-                    geoJSONPlane.questionKey = question.key;
-                    geoJSONPlane.addTo(map);
-                },
             );
 
             mapGeoData = {
@@ -812,6 +978,10 @@ export const Map = ({ className }: { className?: string }) => {
                 map.removeLayer(followMeMarkerRef.current);
                 followMeMarkerRef.current = null;
             }
+            if (followMeCleanupRef.current) {
+                followMeCleanupRef.current();
+                followMeCleanupRef.current = null;
+            }
             if (geoWatchIdRef.current !== null) {
                 navigator.geolocation.clearWatch(geoWatchIdRef.current);
                 geoWatchIdRef.current = null;
@@ -819,10 +989,8 @@ export const Map = ({ className }: { className?: string }) => {
             return;
         }
 
-        geoWatchIdRef.current = navigator.geolocation.watchPosition(
-            (pos) => {
-                const lat = pos.coords.latitude;
-                const lng = pos.coords.longitude;
+        followMeCleanupRef.current = startGeoWatch({
+            onSuccess: ({ lat, lng }) => {
                 if (followMeMarkerRef.current) {
                     followMeMarkerRef.current.setLatLng([lat, lng]);
                 } else {
@@ -837,16 +1005,20 @@ export const Map = ({ className }: { className?: string }) => {
                     followMeMarkerRef.current = marker;
                 }
             },
-            () => {
-                toast.error("Unable to access your location.");
+            onError: (errorMessage) => {
+                toast.error(errorMessage);
                 followMe.set(false);
             },
-            { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 },
-        );
+        });
+
         return () => {
             if (followMeMarkerRef.current) {
                 map.removeLayer(followMeMarkerRef.current);
                 followMeMarkerRef.current = null;
+            }
+            if (followMeCleanupRef.current) {
+                followMeCleanupRef.current();
+                followMeCleanupRef.current = null;
             }
             if (geoWatchIdRef.current !== null) {
                 navigator.geolocation.clearWatch(geoWatchIdRef.current);
@@ -864,11 +1036,19 @@ export const Map = ({ className }: { className?: string }) => {
         () => ({ current: null as L.Marker | null }),
         [],
     );
+    const hiderGpsCleanupRef = useMemo(
+        () => ({ current: null as (() => void) | null }),
+        [],
+    );
 
     useEffect(() => {
         if (!map) return;
 
         const cleanup = () => {
+            if (hiderGpsCleanupRef.current) {
+                hiderGpsCleanupRef.current();
+                hiderGpsCleanupRef.current = null;
+            }
             if (hiderGpsWatchRef.current !== null) {
                 navigator.geolocation.clearWatch(hiderGpsWatchRef.current);
                 hiderGpsWatchRef.current = null;
@@ -887,16 +1067,8 @@ export const Map = ({ className }: { className?: string }) => {
             return cleanup;
         }
 
-        if (!navigator.geolocation) {
-            toast.error("Geolocation is not supported by your browser.");
-            hiderModeEnabled.set(false);
-            return;
-        }
-
-        hiderGpsWatchRef.current = navigator.geolocation.watchPosition(
-            (pos) => {
-                const lat = pos.coords.latitude;
-                const lng = pos.coords.longitude;
+        hiderGpsCleanupRef.current = startGeoWatch({
+            onSuccess: ({ lat, lng }) => {
                 gpsPosition.set({ lat, lng });
 
                 if (hiderGpsMarkerRef.current) {
@@ -932,12 +1104,11 @@ export const Map = ({ className }: { className?: string }) => {
                     map.setView([lat, lng], Math.max(map.getZoom(), 13));
                 }
             },
-            () => {
-                toast.error("Unable to access your GPS location.");
+            onError: (errorMessage) => {
+                toast.error(errorMessage);
                 hiderModeEnabled.set(false);
             },
-            { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 },
-        );
+        });
 
         return cleanup;
     }, [$hiderModeEnabled, map]);
@@ -958,6 +1129,85 @@ export const Map = ({ className }: { className?: string }) => {
 
     useEffect(() => {
         if (!map) return;
+
+        const updateMeasureVisuals = (pin: { lat: number; lng: number }) => {
+            const gps = gpsPosition.get();
+            const center = gps ?? {
+                lat: map.getCenter().lat,
+                lng: map.getCenter().lng,
+            };
+            const gpsLatLng: [number, number] = gps
+                ? [gps.lat, gps.lng]
+                : [center.lat, center.lng];
+            const pinLatLng: [number, number] = [pin.lat, pin.lng];
+            const linePoints: [number, number][] = [gpsLatLng, pinLatLng];
+
+            if (measureLineRef.current) {
+                measureLineRef.current.setLatLngs(linePoints);
+            } else {
+                const line = L.polyline(linePoints, {
+                    color: "#dc2626",
+                    weight: 2,
+                    dashArray: "8 6",
+                    opacity: 0.85,
+                    interactive: false,
+                });
+                line.addTo(map);
+                // @ts-expect-error custom flag
+                line.measureLine = true;
+                measureLineRef.current = line;
+            }
+
+            const midLat = (gpsLatLng[0] + pinLatLng[0]) / 2;
+            const midLng = (gpsLatLng[1] + pinLatLng[1]) / 2;
+            const distKm =
+                map.distance(
+                    L.latLng(gpsLatLng[0], gpsLatLng[1]),
+                    L.latLng(pinLatLng[0], pinLatLng[1]),
+                ) / 1000;
+            const distStr =
+                distKm < 1 ? `${Math.round(distKm * 1000)} m` : `${distKm.toFixed(2)} km`;
+
+            const labelHtml = `<div style="
+                display:inline-block;
+                width:max-content;
+                background:#ffffff;
+                color:#111111;
+                border:1px solid rgba(0,0,0,0.25);
+                box-shadow:0 1px 4px rgba(0,0,0,0.2);
+                padding:3px 8px;
+                border-radius:10px;
+                font-size:13px;
+                font-weight:600;
+                white-space:nowrap;
+                pointer-events:none;
+            ">${distStr}</div>`;
+
+            if (measureLabelRef.current) {
+                measureLabelRef.current.setLatLng([midLat, midLng]);
+                measureLabelRef.current.setIcon(
+                    L.divIcon({
+                        html: labelHtml,
+                        className: "",
+                        iconAnchor: [40, 12],
+                    }),
+                );
+            } else {
+                const lbl = L.marker([midLat, midLng], {
+                    icon: L.divIcon({
+                        html: labelHtml,
+                        className: "",
+                        iconAnchor: [40, 12],
+                    }),
+                    interactive: false,
+                    zIndexOffset: 1600,
+                });
+                lbl.addTo(map);
+                // @ts-expect-error custom flag
+                lbl.measureLabel = true;
+                measureLabelRef.current = lbl;
+            }
+        };
 
         const removeAll = () => {
             if (measureLineRef.current) {
@@ -998,6 +1248,8 @@ export const Map = ({ className }: { className?: string }) => {
         if (!measurePinMarkerRef.current) {
             const pinMarker = L.marker(pinLatLng, {
                 draggable: true,
+                autoPan: true,
+                bubblingMouseEvents: false,
                 icon: L.divIcon({
                     html: `<div style="
                         width:22px;height:22px;
@@ -1018,78 +1270,23 @@ export const Map = ({ className }: { className?: string }) => {
             pinMarker.measurePin = true;
             measurePinMarkerRef.current = pinMarker;
 
+            pinMarker.on("dragstart", () => {
+                map.dragging.disable();
+            });
             pinMarker.on("drag", () => {
                 const ll = pinMarker.getLatLng();
+                updateMeasureVisuals({ lat: ll.lat, lng: ll.lng });
+            });
+            pinMarker.on("dragend", () => {
+                const ll = pinMarker.getLatLng();
                 measurePin.set({ lat: ll.lat, lng: ll.lng });
+                map.dragging.enable();
             });
         } else {
             measurePinMarkerRef.current.setLatLng(pinLatLng);
         }
 
-        // Dashed line
-        const gpsLatLng: [number, number] = gps ? [gps.lat, gps.lng] : [center.lat, center.lng];
-        const linePoints: [number, number][] = [gpsLatLng, pinLatLng];
-
-        if (measureLineRef.current) {
-            measureLineRef.current.setLatLngs(linePoints);
-        } else {
-            const line = L.polyline(linePoints, {
-                color: "#dc2626",
-                weight: 2,
-                dashArray: "8 6",
-                opacity: 0.85,
-                interactive: false,
-            });
-            line.addTo(map);
-            // @ts-expect-error custom flag
-            line.measureLine = true;
-            measureLineRef.current = line;
-        }
-
-        // Distance label at midpoint
-        const midLat = (gpsLatLng[0] + pinLatLng[0]) / 2;
-        const midLng = (gpsLatLng[1] + pinLatLng[1]) / 2;
-        const distKm = map.distance(
-            L.latLng(gpsLatLng[0], gpsLatLng[1]),
-            L.latLng(pinLatLng[0], pinLatLng[1]),
-        ) / 1000;
-        const distStr = distKm < 1
-            ? `${Math.round(distKm * 1000)} m`
-            : `${distKm.toFixed(2)} km`;
-
-        const labelHtml = `<div style="
-            background:rgba(0,0,0,0.75);
-            color:white;
-            padding:2px 8px;
-            border-radius:12px;
-            font-size:13px;
-            font-weight:600;
-            white-space:nowrap;
-            pointer-events:none;
-        ">${distStr}</div>`;
-
-        if (measureLabelRef.current) {
-            measureLabelRef.current.setLatLng([midLat, midLng]);
-            measureLabelRef.current.setIcon(L.divIcon({
-                html: labelHtml,
-                className: "",
-                iconAnchor: [40, 12],
-            }));
-        } else {
-            const lbl = L.marker([midLat, midLng], {
-                icon: L.divIcon({
-                    html: labelHtml,
-                    className: "",
-                    iconAnchor: [40, 12],
-                }),
-                interactive: false,
-                zIndexOffset: 1600,
-            });
-            lbl.addTo(map);
-            // @ts-expect-error custom flag
-            lbl.measureLabel = true;
-            measureLabelRef.current = lbl;
-        }
+        updateMeasureVisuals({ lat: pinLatLng[0], lng: pinLatLng[1] });
 
         return removeAll;
     }, [$measureDistanceEnabled, $measurePin, $gpsPosition, map]);

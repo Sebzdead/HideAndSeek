@@ -122,16 +122,3 @@ export const adjustPerMeasuring = async (
 
     return modifyMapData(mapData, buffer, question.hiderCloser);
 };
-
-
-export const measuringPlanningPolygon = async (question: MeasuringQuestion) => {
-    try {
-        const buffered = await bufferedDeterminer(question);
-
-        if (buffered === false) return false;
-
-        return turf.polygonToLine(buffered);
-    } catch {
-        return false;
-    }
-};

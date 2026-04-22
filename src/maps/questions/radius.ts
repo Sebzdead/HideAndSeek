@@ -18,14 +18,3 @@ export const adjustPerRadius = async (
 
     return modifyMapData(mapData, circle, question.within);
 };
-
-export const radiusPlanningPolygon = async (question: RadiusQuestion) => {
-    const point = turf.point([question.lng, question.lat]);
-    const circle = await arcBuffer(
-        turf.featureCollection([point]),
-        question.radius,
-        question.unit,
-    );
-
-    return turf.polygonToLine(circle);
-};

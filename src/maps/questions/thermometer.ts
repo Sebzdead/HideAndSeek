@@ -25,19 +25,3 @@ export const adjustPerThermometer = (
         );
     }
 };
-
-
-export const thermometerPlanningPolygon = (question: ThermometerQuestion) => {
-    const pointA = turf.point([question.lngA, question.latA]);
-    const pointB = turf.point([question.lngB, question.latB]);
-
-    const voronoi = geoSpatialVoronoi(turf.featureCollection([pointA, pointB]));
-
-    return turf.featureCollection(
-        voronoi.features
-            .map((x: any) => turf.polygonToLine(x))
-            .flatMap((line) =>
-                line.type === "FeatureCollection" ? line.features : [line],
-            ),
-    );
-};

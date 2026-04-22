@@ -654,14 +654,6 @@ const tutorialSteps: TutorialStep[] = [
                     I highly recommend disabling this as I find that it makes
                     changing data easier.
                 </strong>
-                <br />• <strong>Planning Mode:</strong> Preview question effects
-                before finalizing.{" "}
-                <strong>
-                    I highly recommend enabling this as it let&apos;s you see
-                    all potential outcomes of a question, better improving your
-                    strategy.
-                </strong>
-                <br />
                 <br />
                 <strong>API Integration:</strong>
                 <br />• <strong>Thunderforest API Key:</strong> Enhanced map
@@ -750,7 +742,8 @@ const tutorialSteps: TutorialStep[] = [
                 <br />✓ Set up your game area using Place Picker or custom
                 polygons
                 <br />✓ Add and configure questions using the five main types
-                <br />✓ Test your setup with Planning Mode if desired
+                <br />✓ Refresh the map after adding questions to verify the
+                elimination area
                 <br />✓ Configure options for optimal performance and experience
                 <br />✓ Share the game link with all players using Share button
                 <br />✓ Use Hider Mode for automatic question answering

@@ -31,13 +31,11 @@ import {
     hidingRadiusUnits,
     hidingZone,
     includeDefaultStations,
-    leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
     measureDistanceEnabled,
     pastebinApiKey,
     permanentOverlay,
-    planningModeEnabled,
     polyGeoJSON,
     questions,
     save,
@@ -81,7 +79,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $gpsPosition = useStore(gpsPosition);
     const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
-    const $planningMode = useStore(planningModeEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $thunderforestApiKey = useStore(thunderforestApiKey);
     const $pastebinApiKey = useStore(pastebinApiKey);
@@ -555,34 +552,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             !$alwaysUsePastebin,
                                         )
                                     }
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
-                                    Enable planning mode?
-                                </label>
-                                <Checkbox
-                                    checked={$planningMode}
-                                    onCheckedChange={() => {
-                                        if ($planningMode === true) {
-                                            const map = leafletMapContext.get();
-
-                                            if (map) {
-                                                map.eachLayer((layer: any) => {
-                                                    if (
-                                                        layer.questionKey ||
-                                                        layer.questionKey === 0
-                                                    ) {
-                                                        map.removeLayer(layer);
-                                                    }
-                                                });
-                                            }
-                                        } else {
-                                            questions.set([...questions.get()]); // I think that this should always be auto-saved
-                                        }
-
-                                        planningModeEnabled.set(!$planningMode);
-                                    }}
                                 />
                             </div>
                             <div className="flex flex-row items-center gap-2">

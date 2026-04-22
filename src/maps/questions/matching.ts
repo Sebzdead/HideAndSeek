@@ -212,18 +212,3 @@ export const adjustPerMatching = async (
 
     return modifyMapData(mapData, boundary, question.same);
 };
-
-
-export const matchingPlanningPolygon = async (question: MatchingQuestion) => {
-    try {
-        const boundary = await determineMatchingBoundary(question);
-
-        if (boundary === false) {
-            return false;
-        }
-
-        return turf.polygonToLine(boundary);
-    } catch {
-        return false;
-    }
-};

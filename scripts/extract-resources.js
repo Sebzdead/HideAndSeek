@@ -44,6 +44,23 @@ const reprojectGeoJSON = (geoJSON) => {
     return newGeo;
 };
 
+/** Keep only STM métro lines 1, 2, 4, 5 (orange, green, yellow, blue). Drops bus and other modes. */
+const filterStmMetroArrets = (geoJSON) => {
+    const allowedRouteIds = new Set(["1", "2", "4", "5"]);
+    const hasMetroRoute = (routeId) =>
+        String(routeId ?? "")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+            .some((part) => allowedRouteIds.has(part));
+    return {
+        ...geoJSON,
+        features: (geoJSON.features ?? []).filter((f) =>
+            hasMetroRoute(f?.properties?.route_id),
+        ),
+    };
+};
+
 console.log("Processing and copying metro lines...");
 
 const stm_lignes_path = path.join(
@@ -68,9 +85,10 @@ const stm_arrets_path = path.join(
 if (fs.existsSync(stm_arrets_path)) {
     const data = JSON.parse(fs.readFileSync(stm_arrets_path, "utf-8"));
     const reprojected = reprojectGeoJSON(data);
+    const metroOnly = filterStmMetroArrets(reprojected);
     fs.writeFileSync(
         path.join(METRO_DIR, "stm_arrets_sig.json"),
-        JSON.stringify(reprojected),
+        JSON.stringify(metroOnly, null, 2),
     );
 }
 

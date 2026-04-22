@@ -317,14 +317,6 @@ export const hidingZone = computed(
 );
 
 export const drawingQuestionKey = atom<number>(-1);
-export const planningModeEnabled = persistentAtom<boolean>(
-    "planningModeEnabled",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 export const autoZoom = persistentAtom<boolean>("autoZoom", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
